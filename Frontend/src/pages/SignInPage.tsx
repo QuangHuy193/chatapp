@@ -1,5 +1,5 @@
+import Logout from "@/components/auth/logout";
 import { SigninForm } from "@/components/auth/signin-form";
-import React from "react";
 
 const SignInPage = () => {
   return (
@@ -8,6 +8,7 @@ const SignInPage = () => {
      bg-gradient-purple"
     >
       <div className="w-full max-w-sm md:max-w-4xl">
+        <Logout />
         <SigninForm />
       </div>
     </div>

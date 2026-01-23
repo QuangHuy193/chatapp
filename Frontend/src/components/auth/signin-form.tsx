@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router";
 
 // điều kiện form đăng nhập
 const signInSchema = z.object({
@@ -32,8 +34,18 @@ export function SigninForm({
   } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
   });
+  const { signIn } = useAuthStore();
+  const navigate = useNavigate();
 
-  const onSubmit = async (data: SignInFormValues) => {};
+  const onSubmit = async (data: SignInFormValues) => {
+    const { userName, password } = data;
+
+    const isSuccess = await signIn(userName, password);
+    console.warn("signform-isSuccess", isSuccess);
+    if (isSuccess) {
+      navigate("/");
+    }
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0 border-border">
