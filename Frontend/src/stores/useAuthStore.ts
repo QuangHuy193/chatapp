@@ -16,6 +16,10 @@ export const useAuthStore = create<authState>((set, get) => ({
     });
   },
 
+  setAccessToken: (accessToken) => {
+    set({ accessToken });
+  },
+
   signUp: async (userName, firstName, lastName, email, password) => {
     try {
       set({ loading: true });
@@ -38,8 +42,8 @@ export const useAuthStore = create<authState>((set, get) => ({
     try {
       set({ loading: true });
       const { accessToken } = await authService.signIn(userName, password);
-      set({ accessToken });
 
+      get().setAccessToken(accessToken);
       // lấy dl người dùng
       await get().fetchMe();
 
@@ -88,7 +92,7 @@ export const useAuthStore = create<authState>((set, get) => ({
 
       const accessToken = await authService.refreshToken();
 
-      set({ accessToken });
+      get().setAccessToken(accessToken);
 
       if (!user) {
         await fetchMe();

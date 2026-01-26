@@ -9,3 +9,7 @@ export const authMe = async (req, res) => {
     });
   }
 };
+
+export const test = (req, res) => {
+  return res.sendStatus(200);
+};
