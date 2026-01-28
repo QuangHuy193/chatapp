@@ -8,7 +8,7 @@ const messageSchema =new mongoose.Schema(
       required: true,
       index: true,
     },
-    conversationId: {
+    senderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -27,4 +27,5 @@ const messageSchema =new mongoose.Schema(
 // index kết hợp, (1 tăng dần, -1 giảm dần)
 messageSchema.index({ conversationId: 1, createdAt: -1 });
 
-export default Message = mongoose.model("Message", messageSchema);
+const Message = mongoose.model("Message", messageSchema);
+export default Message

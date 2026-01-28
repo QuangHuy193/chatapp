@@ -1,6 +1,8 @@
 import Friend from "../models/Friend.js";
 import User from "../models/User.js";
 import FriendRequest from "../models/FriendRequset.js";
+import { swapFriend } from "../util/friendHelper.js";
+
 
 export const sendFriendRequest = async (req, res) => {
   try {
@@ -72,10 +74,11 @@ export const acceptFriendRequest = async (req, res) => {
         .status(403)
         .json({ messgae: "Bạn không có quyền chấp nhận lời mời này" });
     }
-
+    
+    const [userA, userB] = swapFriend(request.from, request.to);
     await Friend.create({
-      userA: request.from ,
-      userB: request.to,
+      userA,
+      userB,
     });
 
     await FriendRequest.findByIdAndDelete(requestId);
@@ -125,6 +128,31 @@ export const declineFriendRequest = async (req, res) => {
 
 export const getAllFriends = async (req, res) => {
   try {
+    const userId = req.user._id;
+
+    const friendShips = await Friend.find({
+      $or: [
+        {
+          userA: userId,
+        },
+        {
+          userB: userId,
+        },
+      ],
+    })
+      .populate("userA", "_id userName displayName avatarUrl")
+      .populate("userB", "_id userName displayName avatarUrl")
+      .lean();
+
+    if (friendShips.length === 0) {
+      return res.status(200).json({ friends: [] });
+    }
+
+    const friends = friendShips.map((fs) =>
+      fs.userA._id.toString() === userId.toString() ? fs.userB : fs.userA,
+    );
+
+    return res.status(200).json({ friends });
   } catch (error) {
     console.log("lỗi khi lấy danh sách bạn bè", error);
     return res.status(500).json({ messgae: "lỗi hệ thống" });
@@ -133,6 +161,16 @@ export const getAllFriends = async (req, res) => {
 
 export const getFriendRequests = async (req, res) => {
   try {
+    const userId = req.user._id;
+
+    const populateFields = "_id userName displayName avatarUrl";
+
+    const [send, received] = await Promise.all([
+      FriendRequest.find({ from: userId }).populate("from", populateFields),
+      FriendRequest.find({ to: userId }).populate("to", populateFields),
+    ]);
+
+    return res.status(200).json({ send, received });
   } catch (error) {
     console.log("lỗi khi lấy danh sách yêu cầu kết bạn", error);
     return res.status(500).json({ messgae: "lỗi hệ thống" });

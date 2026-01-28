@@ -26,7 +26,7 @@ const groupSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    },
+    }, 
   },
   { _id: false },
 );
@@ -67,10 +67,12 @@ const conversationSchema = new mongoose.Schema(
     lastMessageAt: {
       type: Date,
     },
-    seenBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    seenBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     lastMessage: {
       type: lastMessageSchema,
       default: null,
@@ -90,5 +92,5 @@ conversationSchema.index({
   lastMessageSchema: -1,
 });
 
-const Conversation = mongoose.model("Conversation", conversationSchema)
-export default Conversation
+const Conversation = mongoose.model("Conversation", conversationSchema);
+export default Conversation;
