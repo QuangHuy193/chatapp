@@ -18,3 +18,9 @@ export interface authState {
   fetchMe: () => Promise<void>;
   refreshToken: () => Promise<void>;
 }
+
+export interface ThemeState {
+  isDark: boolean;
+  toggleTheme: () => void;
+  setTheme: (dark: boolean) => void;
+}
