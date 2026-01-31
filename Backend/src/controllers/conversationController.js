@@ -116,7 +116,7 @@ export const getConversation = async (req, res) => {
       };
     });
 
-    return res.status(200).json({ formatted });
+    return res.status(200).json({ conversations: formatted });
   } catch (error) {
     console.error("Lỗi khi lấy danh sách hội thoại", error);
     return res.status(500).json({ message: "Lỗi hệ thống" });

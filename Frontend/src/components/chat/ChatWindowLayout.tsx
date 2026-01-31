@@ -1,5 +1,7 @@
+import Logout from "../auth/Logout";
+
 const ChatWindowLayout = () => {
-  return <div>ChatWindowLayout</div>;
+  return <div><Logout/> ChatWindowLayout</div>;
 };
 
 export default ChatWindowLayout;

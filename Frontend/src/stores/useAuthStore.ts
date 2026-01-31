@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { authService } from "@/services/authService";
 import type { authState } from "@/types/store";
 import { persist } from "zustand/middleware";
+import { useChatStore } from "./useChatStore";
 
 export const useAuthStore = create<authState>()(
   persist(
@@ -19,6 +20,8 @@ export const useAuthStore = create<authState>()(
         });
 
         localStorage.clear();
+
+        useChatStore.getState().reset();
       },
 
       setAccessToken: (accessToken) => {
@@ -54,12 +57,15 @@ export const useAuthStore = create<authState>()(
           set({ loading: true });
 
           localStorage.clear();
+          useChatStore.getState().reset();
 
           const { accessToken } = await authService.signIn(userName, password);
 
           get().setAccessToken(accessToken);
           // lấy dl người dùng
           await get().fetchMe();
+          // lấy list hội thoại
+          await useChatStore.getState().fetchConversations();
 
           toast.success("Chào mừng bạn quay lại MyChat 🎉");
           return true;
