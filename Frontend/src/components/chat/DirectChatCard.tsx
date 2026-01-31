@@ -5,11 +5,11 @@ import { useChatStore } from "@/stores/useChatStore";
 import { cn } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 import StatusBadge from "./StatusBadge";
-import UnreadCountBadge from "./unreadCountBadge";
+import UnreadCountBadge from "./UnreadCountBadge";
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
-  const { activeConversationId, setActiveConversationId, messages } =
+  const { activeConversationId, setActiveConversationId, messages,fetchMessage } =
     useChatStore();
 
   if (!user) return null;
@@ -23,7 +23,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const handleSeletctConversation = async (id: string) => {
     setActiveConversationId(id);
     if (!messages[id]) {
-      // TODO fetch message
+     await fetchMessage()
     }
   };
   return (

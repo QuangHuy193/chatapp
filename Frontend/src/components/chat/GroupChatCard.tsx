@@ -2,21 +2,27 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useChatStore } from "@/stores/useChatStore";
 import type { Conversation } from "@/types/chat";
 import ChatCard from "./ChatCard";
+import UnreadCountBadge from "./UnreadCountBadge";
+import GroupChatAvatar from "./GroupChatAvatar";
 
 const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
-  const { activeConversationId, setActiveConversationId, messages } =
-    useChatStore();
+  const {
+    activeConversationId,
+    setActiveConversationId,
+    messages,
+    fetchMessage,
+  } = useChatStore();
 
   if (!user) return null;
 
-  const unreadCount = convo.unreadCounts[user._id];
+  const unreadCount = convo.unreadCount[user._id];
   const name = convo.group?.name ?? "";
 
   const handleSeletctConversation = async (id: string) => {
     setActiveConversationId(id);
     if (!messages[id]) {
-      // TODO fetch message
+      await fetchMessage();
     }
   };
 
@@ -33,7 +39,12 @@ const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
         isActive={activeConversationId === convo._id}
         onSelect={handleSeletctConversation}
         unreadCount={unreadCount}
-        leftSection={<></>}
+        leftSection={
+          <>
+            {unreadCount > 0 && <UnreadCountBadge unreadCount={unreadCount} />}
+            <GroupChatAvatar participants={convo.participants} type="chat" />
+          </>
+        }
         subtitle={
           <p className="text-sm truncate text-muted-foreground">
             {convo.participants.length} thành viên
