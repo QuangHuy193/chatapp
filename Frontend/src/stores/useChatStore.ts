@@ -3,6 +3,7 @@ import type { ChatState } from "@/types/store";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useAuthStore } from "./useAuthStore";
+import type { Conversation } from "@/types/chat";
 
 export const useChatStore = create<ChatState>()(
   persist(
@@ -80,7 +81,43 @@ export const useChatStore = create<ChatState>()(
           set({ messageLoading: false });
         }
       },
+
+      sendDirectMessage: async (recipientId, content, imgUrl) => {
+        try {
+          const { activeConversationId } = get();
+
+          await chatService.sendDirectMessage(
+            recipientId,
+            content,
+            imgUrl,
+            activeConversationId ?? undefined,
+          );
+
+          set((state) => ({
+            conversations: state.conversations.map((c: Conversation) =>
+              c._id === activeConversationId ? { ...c, seenBy: [] } : c,
+            ),
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra khi sendDirectMessage", error);
+        }
+      },
+
+      sendGroupMessage: async (conversationId, content, imgUrl) => {
+        try {
+          await chatService.sendGroupMessage(conversationId, content, imgUrl);
+
+          set((state) => ({
+            conversations: state.conversations.map((c: Conversation) =>
+              c._id === get().activeConversationId ? { ...c, seenBy: [] } : c,
+            ),
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra khi sendGroupMessage", error);
+        }
+      },
     }),
+
     {
       name: "chat-storage",
       partialize: (state) => ({ conversations: state.conversations }),

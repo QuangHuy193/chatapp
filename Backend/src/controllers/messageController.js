@@ -17,6 +17,7 @@ export const sendDirectMessage = async (req, res) => {
       conversation = await Conversation.findById(conversationId);
     }
 
+    // tạo hội thoại mới
     if (!conversation) {
       conversation = await Conversation.create({
         type: "direct",
@@ -35,6 +36,9 @@ export const sendDirectMessage = async (req, res) => {
       content,
     });
 
+    console.log("conversation", conversation);
+    console.log("message", message);
+    console.log("senderId", senderId);
     updateCoversationAfterCreateMessage(conversation, message, senderId);
 
     await conversation.save();
@@ -48,7 +52,7 @@ export const sendDirectMessage = async (req, res) => {
 
 export const sendGroupMessage = async (req, res) => {
   try {
-    const { content, conversationId } = req.body;
+    const { content } = req.body;
     const senderId = req.user._id;
     const conversation = req.conversation;
 
@@ -64,7 +68,7 @@ export const sendGroupMessage = async (req, res) => {
 
     updateCoversationAfterCreateMessage(conversation, message, senderId);
 
-    await conversation.save()
+    await conversation.save();
 
     return res.status(201).json({ message });
   } catch (error) {

@@ -3,14 +3,17 @@ export const updateCoversationAfterCreateMessage = (
   message,
   senderId,
 ) => {
+  console.log("conversation2", conversation);
+  console.log("message2", message);
+  console.log("senderId2", senderId);
   conversation.set({
-    seenBy:[],
-    lastMessageAt: message.createAt,
+    seenBy: [],
+    lastMessageAt: message.createdAt,
     lastMessage: {
       _id: message._id,
       content: message.content,
       senderId,
-      createAt: message.createAt,
+      createdAt: message.createdAt,
     },
   });
 

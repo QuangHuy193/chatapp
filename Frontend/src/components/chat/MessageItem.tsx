@@ -29,9 +29,9 @@ const MessageItem = ({
       new Date(prevMess?.createdAt || 0).getTime() >
       180000; // quá 3 phút
 
-  const isLastInSequence =
-    index === messages.length - 1 ||
-    messages[index + 1].senderId !== message.senderId;
+  // const isLastInSequence =
+  //   index === messages.length - 1 ||
+  //   messages[index + 1].senderId !== message.senderId;
 
   const participant = selectedConvo.participants.find(
     (p: Participant) => p._id.toString() === message.senderId.toString(),
@@ -78,28 +78,26 @@ const MessageItem = ({
         </Card>
 
         {/* time */}
-        {isLastInSequence && message.isOwn && (
+        {isGroupBreak && (
           <span className="text-muted-foreground text-xs px-1 flex">
             {formatMessageTime(new Date(message.createdAt))}
           </span>
         )}
 
         {/* status */}
-        {message.isOwn &&
-          isLastInSequence &&
-          message._id === selectedConvo.lastMessage?._id && (
-            <Badge
-              variant="outline"
-              className={cn(
-                "text-xs px-1.5 py-0.5 h-4 border-0 flex",
-                lastMessageStatus === "seen"
-                  ? "bg-primary/20 text-primary"
-                  : "bg-muted text-muted-foreground",
-              )}
-            >
-              {lastMessageStatus === "dilevered" ? "Đã gửi ✓" : "Đã xem ✓✓"}
-            </Badge>
-          )}
+        {message.isOwn && message._id === selectedConvo.lastMessage?._id && (
+          <Badge
+            variant="outline"
+            className={cn(
+              "text-xs px-1.5 py-0.5 h-4 border-0 flex",
+              lastMessageStatus === "seen"
+                ? "bg-primary/20 text-primary"
+                : "bg-muted text-muted-foreground",
+            )}
+          >
+            {lastMessageStatus === "dilevered" ? "Đã gửi ✓" : "Đã xem ✓✓"}
+          </Badge>
+        )}
       </div>
     </div>
   );
