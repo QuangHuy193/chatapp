@@ -37,7 +37,7 @@ export const protectedRoute = async (req, res, next) => {
       },
     );
   } catch (error) {
-    console.log("Lỗi khi xác minh jwt trong middleware", error);
+    console.error("Lỗi khi xác minh jwt trong middleware", error);
     return res.status(500).json({ mesage: "Lỗi hệ thống" });
   }
 };

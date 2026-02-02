@@ -116,6 +116,49 @@ export const useChatStore = create<ChatState>()(
           console.error("Lỗi xảy ra khi sendGroupMessage", error);
         }
       },
+      addMessage: async (message) => {
+        try {
+          const { user } = useAuthStore.getState();
+          const { fetchMessage } = get();
+
+          message.isOwn = message.senderId === user?._id;
+
+          const convoId = message.conversationId;
+
+          let prevMess = get().messages[convoId]?.items ?? [];
+
+          if (prevMess.length === 0) {
+            await fetchMessage(message.conversationId);
+            prevMess = get().messages[convoId]?.items;
+          }
+
+          set((state) => {
+            if (prevMess.some((m) => m._id === message._id)) {
+              return state;
+            }
+            return {
+              messages: {
+                ...state.messages,
+                [convoId]: {
+                  items: [...prevMess, message],
+                  hasMore: state.messages[convoId].hasMore,
+                  nextCursor: state.messages[convoId].nextCursor ?? undefined,
+                },
+              },
+            };
+          });
+        } catch (error) {
+          console.error("Lỗi xảy ra khi addMessage", error);
+        }
+      },
+
+      updateConversation: (conversation) => {
+        set((state) => ({
+          conversations: state.conversations.map((c) =>
+            c._id === conversation._id ? { ...c, ...conversation } : c,
+          ),
+        }));
+      },
     }),
 
     {

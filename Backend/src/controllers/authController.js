@@ -40,7 +40,7 @@ export const signUp = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    console.log(`Lỗi khi gọi signup`, error);
+    console.error(`Lỗi khi gọi signup`, error);
     res.status(500).json({
       message: "Lỗi hệ thống",
     });
@@ -106,7 +106,7 @@ export const signIn = async (req, res) => {
       accessToken: access_token,
     });
   } catch (error) {
-    console.log(`Lỗi khi gọi signin`, error);
+    console.error(`Lỗi khi gọi signin`, error);
     res.status(500).json({
       message: "Lỗi hệ thống",
     });
@@ -127,7 +127,7 @@ export const signOut = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    console.log(`Lỗi khi gọi signout`, error);
+    console.error(`Lỗi khi gọi signout`, error);
     res.status(500).json({
       message: "Lỗi hệ thống",
     });
@@ -168,7 +168,7 @@ export const refreshToken = async (req, res) => {
     // trả về
     return res.status(200).json({ accessToken });
   } catch (error) {
-    console.log("Lỗi khi gọi refreshToken", error);
+    console.error("Lỗi khi gọi refreshToken", error);
     res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };

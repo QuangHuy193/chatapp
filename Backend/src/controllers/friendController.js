@@ -52,7 +52,7 @@ export const sendFriendRequest = async (req, res) => {
       .status(201)
       .json({ messgae: "Gửi lời mời kết bạn thành công", request });
   } catch (error) {
-    console.log("lỗi khi gửi yêu cầu kết bạn", error);
+    console.error("lỗi khi gửi yêu cầu kết bạn", error);
     return res.status(500).json({ messgae: "lỗi hệ thống" });
   }
 };
@@ -94,7 +94,7 @@ export const acceptFriendRequest = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("lỗi khi chấp nhận yêu cầu kết bạn", error);
+    console.error("lỗi khi chấp nhận yêu cầu kết bạn", error);
     return res.status(500).json({ messgae: "lỗi hệ thống" });
   }
 };
@@ -121,7 +121,7 @@ export const declineFriendRequest = async (req, res) => {
 
     return res.status(204);
   } catch (error) {
-    console.log("lỗi khi từ chối yêu cầu kết bạn", error);
+    console.error("lỗi khi từ chối yêu cầu kết bạn", error);
     return res.status(500).json({ messgae: "lỗi hệ thống" });
   }
 };
@@ -154,7 +154,7 @@ export const getAllFriends = async (req, res) => {
 
     return res.status(200).json({ friends });
   } catch (error) {
-    console.log("lỗi khi lấy danh sách bạn bè", error);
+    console.error("lỗi khi lấy danh sách bạn bè", error);
     return res.status(500).json({ messgae: "lỗi hệ thống" });
   }
 };
@@ -172,7 +172,7 @@ export const getFriendRequests = async (req, res) => {
 
     return res.status(200).json({ send, received });
   } catch (error) {
-    console.log("lỗi khi lấy danh sách yêu cầu kết bạn", error);
+    console.error("lỗi khi lấy danh sách yêu cầu kết bạn", error);
     return res.status(500).json({ messgae: "lỗi hệ thống" });
   }
 };
