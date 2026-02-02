@@ -3,7 +3,6 @@ import { io, type Socket } from "socket.io-client";
 import type { SocketState } from "@/types/store";
 import { useAuthStore } from "./useAuthStore";
 import { useChatStore } from "./useChatStore";
-import type { Conversation } from "@/types/chat";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -65,26 +64,28 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
     // đọc mess
     socket.on("read-message", ({ conversation, lastMessage }) => {
-      const { conversations } = useChatStore();
-
-      let conversationOld =
-        conversations.find((c) => c._id === conversation._id) ?? conversation;
-
-      // const updated = {
-      //   ...conversationOld,
-      //   lastMessage,
-      // };
-
-      conversationOld = {
-        ...conversationOld,
+      const updated = {
         lastMessage,
         _id: conversation._id,
         lastMessageAt: conversation.lastMessageAt,
         unreadCount: conversation.unreadCount,
         seenBy: conversation.seenBy,
       };
+      // const { conversations } = useChatStore();
 
-      useChatStore.getState().updateConversation(conversationOld);
+      // let conversationOld =
+      //   conversations.find((c) => c._id === conversation._id) ?? conversation;
+
+      // conversationOld = {
+      //   ...conversationOld,
+      //   lastMessage,
+      //   _id: conversation._id,
+      //   lastMessageAt: conversation.lastMessageAt,
+      //   unreadCount: conversation.unreadCount,
+      //   seenBy: conversation.seenBy,
+      // };
+
+      useChatStore.getState().updateConversation(updated);
     });
   },
   disconnectSocket: () => {

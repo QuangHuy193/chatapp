@@ -1,7 +1,7 @@
 import api from "@/lib/axios";
 import type { ConversationResponse, Message } from "../types/chat";
 
-const PAGELIMIT = 50;
+const PAGELIMIT = 20;
 
 interface fetchMessageProps {
   messages: Message[];

@@ -33,7 +33,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
       await fetchMessage();
     }
   };
-  console.log("DirectMessageCard", convo);
+
   return (
     <div>
       <ChatCard
