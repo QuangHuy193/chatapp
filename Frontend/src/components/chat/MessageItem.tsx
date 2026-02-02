@@ -27,14 +27,14 @@ const MessageItem = ({
     message.senderId !== prevMess.senderId ||
     new Date(message.createdAt).getTime() -
       new Date(prevMess?.createdAt || 0).getTime() >
-      180000; // quá 3 phút
+      300000; // quá 5 phút
 
   // const isLastInSequence =
   //   index === messages.length - 1 ||
   //   messages[index + 1].senderId !== message.senderId;
 
   const participant = selectedConvo.participants.find(
-    (p: Participant) => p._id.toString() === message.senderId.toString(),
+    (p: Participant) => p.userId.toString() === message.senderId.toString(),
   );
 
   return (

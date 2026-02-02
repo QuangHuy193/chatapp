@@ -12,9 +12,7 @@ import { useSocketStore } from "@/stores/useSocketStore";
 const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
   const { activeConversationId, conversations } = useChatStore();
   const { user } = useAuthStore();
-  const { onlineUsers } = useSocketStore();
-  
-  
+  const { onlineUsers } = useSocketStore();  
 
   chat = chat ?? conversations.find((c) => c._id === activeConversationId);
 
@@ -28,7 +26,7 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
 
   let otherUser;
   if (chat.type === "direct") {
-    const otherUsers = chat.participants.filter((p) => p._id !== user?._id);
+    const otherUsers = chat.participants.filter((p) => p.userId !== user?._id);
     otherUser = otherUsers.length > 0 ? otherUsers[0] : null;
   }
 
@@ -59,7 +57,7 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
                 />
                 <StatusBadge
                   status={
-                    onlineUsers.includes(otherUser?._id ?? "")
+                    onlineUsers.includes(otherUser?.userId ?? "")
                       ? "online"
                       : "offline"
                   }

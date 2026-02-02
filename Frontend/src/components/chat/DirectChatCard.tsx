@@ -7,6 +7,7 @@ import UserAvatar from "./UserAvatar";
 import StatusBadge from "./StatusBadge";
 import UnreadCountBadge from "./UnreadCountBadge";
 import { useSocketStore } from "@/stores/useSocketStore";
+import { APP_NAME } from "@/lib/constant";
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
@@ -20,7 +21,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
 
   if (!user) return null;
 
-  const otherUser = convo.participants.find((p) => p._id !== user?._id);
+  const otherUser = convo.participants.find((p) => p.userId !== user?._id);
   if (!otherUser) return null;
 
   const unreadCount = convo.unreadCount[user._id];
@@ -32,11 +33,12 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
       await fetchMessage();
     }
   };
+  console.log("DirectMessageCard", convo);
   return (
     <div>
       <ChatCard
         convoId={convo._id}
-        name={otherUser.displayName ?? ""}
+        name={otherUser.displayName ?? APP_NAME}
         timmestamp={
           convo.lastMessage?.createdAt
             ? new Date(convo.lastMessage.createdAt)
@@ -55,7 +57,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
 
             <StatusBadge
               status={
-                onlineUsers.includes(otherUser?._id ?? "")
+                onlineUsers.includes(otherUser?.userId ?? "")
                   ? "online"
                   : "offline"
               }

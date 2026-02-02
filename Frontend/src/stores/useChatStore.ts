@@ -92,7 +92,7 @@ export const useChatStore = create<ChatState>()(
             imgUrl,
             activeConversationId ?? undefined,
           );
-
+      
           set((state) => ({
             conversations: state.conversations.map((c: Conversation) =>
               c._id === activeConversationId ? { ...c, seenBy: [] } : c,
@@ -158,6 +158,43 @@ export const useChatStore = create<ChatState>()(
             c._id === conversation._id ? { ...c, ...conversation } : c,
           ),
         }));
+      },
+
+      markAsSeen: async () => {
+        try {
+          const { user } = useAuthStore.getState();
+          const { activeConversationId, conversations } = get();
+
+          if (!user || !activeConversationId) return;
+
+          const convo = conversations.find(
+            (c) => c._id === activeConversationId,
+          );
+
+          if (!convo) return;
+
+          if ((convo.unreadCount?.[user._id] ?? 0) === 0) {
+            return;
+          }
+
+          await chatService.markAsSeen(activeConversationId);
+
+          set((state) => ({
+            conversations: state.conversations.map((c) =>
+              c._id === activeConversationId && c.lastMessage
+                ? {
+                    ...c,
+                    unreadCount: {
+                      ...c.unreadCount,
+                      [user._id]: 0,
+                    },
+                  }
+                : c,
+            ),
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra khi gọi markAsSeen", error);
+        }
       },
     }),
 
