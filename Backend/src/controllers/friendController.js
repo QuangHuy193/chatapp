@@ -3,33 +3,33 @@ import User from "../models/User.js";
 import FriendRequest from "../models/FriendRequset.js";
 import { swapFriend } from "../util/friendHelper.js";
 
-
 export const sendFriendRequest = async (req, res) => {
   try {
     const { to, message } = req.body;
-
     const from = req.user._id;
 
-    if (from === to) {
+    if (from.toString() === to.toString()) {
       return res
         .status(400)
-        .json({ messgae: "Không thể gửi lời mời kết bạn cho chính mình" });
+        .json({ message: "Không thể gửi lời mời kết bạn cho chính mình" });
     }
 
     const userExists = await User.exists({ _id: to });
     if (!userExists) {
-      return res.status(400).json({ messgae: "Người dùng không tồn tại" });
+      return res.status(400).json({ message: "Người dùng không tồn tại" });
     }
 
     let userA = from.toString();
-    let userB = from.toString();
-    if (userA > userB) {
-      [userA, userB] = [userB, userA];
-    }
+    let userB = to.toString();   
 
     // chạy song song 2 request
     const [alreadyFriends, existingRequest] = await Promise.all([
-      Friend.findOne({ userA, userB }),
+      Friend.findOne({
+        $or: [
+          { userA, userB },
+          { userB: userA, userA: userB },
+        ],
+      }),
       FriendRequest.findOne({
         $or: [
           { from, to },
@@ -39,21 +39,26 @@ export const sendFriendRequest = async (req, res) => {
     ]);
 
     if (alreadyFriends) {
-      return res.status(400).json({ messgae: "2 người đã là bạn bè" });
+      return res.status(400).json({ message: "2 người đã là bạn bè" });
     }
     if (existingRequest) {
       return res
         .status(400)
-        .json({ messgae: "Đã có lời mời kết bạn dang chờ" });
+        .json({ message: "Đã có lời mời kết bạn dang chờ" });
     }
 
-    const request = await FriendRequest.create({ from, to, message });
+    const request = await FriendRequest.create({
+      from: userA,
+      to: userB,
+      message,
+    });
+    console.log("đã tạo");
     return res
       .status(201)
       .json({ messgae: "Gửi lời mời kết bạn thành công", request });
   } catch (error) {
     console.error("lỗi khi gửi yêu cầu kết bạn", error);
-    return res.status(500).json({ messgae: "lỗi hệ thống" });
+    return res.status(500).json({ message: "lỗi hệ thống" });
   }
 };
 
@@ -74,7 +79,7 @@ export const acceptFriendRequest = async (req, res) => {
         .status(403)
         .json({ messgae: "Bạn không có quyền chấp nhận lời mời này" });
     }
-    
+
     const [userA, userB] = swapFriend(request.from, request.to);
     await Friend.create({
       userA,

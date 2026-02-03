@@ -70,3 +70,9 @@ export interface SocketState {
   connectSocket: () => void;
   disconnectSocket: () => void;
 }
+
+export interface FriendState {
+  loading: boolean;
+  searchUserByUserName: (userName: string) => Promise<User | null>;
+  sendFriendRequest: (to: string, message?: string) => Promise<string>;
+}

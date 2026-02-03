@@ -70,7 +70,7 @@ export function SigninForm({
                 <FieldLabel htmlFor="userName">Tên đăng nhập</FieldLabel>
                 <Input id="userName" type="text" {...register("userName")} />
                 {errors.userName && (
-                  <p className="text-destructive text-sm italic">
+                  <p className="error-message">
                     {errors.userName.message}
                   </p>
                 )}
@@ -84,7 +84,7 @@ export function SigninForm({
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-destructive text-sm italic">
+                  <p className="error-message">
                     {errors.password.message}
                   </p>
                 )}

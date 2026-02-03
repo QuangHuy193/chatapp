@@ -85,7 +85,7 @@ export function SignupForm({
                       {...register("lastName")}
                     />
                     {errors.lastName && (
-                      <p className="text-destructive text-sm italic">
+                      <p className="error-message">
                         {errors.lastName.message}
                       </p>
                     )}
@@ -98,7 +98,7 @@ export function SignupForm({
                       {...register("firstName")}
                     />
                     {errors.firstName && (
-                      <p className="text-destructive text-sm italic">
+                      <p className="error-message">
                         {errors.firstName.message}
                       </p>
                     )}
@@ -114,7 +114,7 @@ export function SignupForm({
                   {...register("userName")}
                 />
                 {errors.userName && (
-                  <p className="text-destructive text-sm italic">
+                  <p className="error-message">
                     {errors.userName.message}
                   </p>
                 )}
@@ -128,7 +128,7 @@ export function SignupForm({
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-destructive text-sm italic">
+                  <p className="error-message">
                     {errors.email.message}
                   </p>
                 )}
@@ -141,7 +141,7 @@ export function SignupForm({
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-destructive text-sm italic">
+                  <p className="error-message">
                     {errors.password.message}
                   </p>
                 )}
@@ -156,7 +156,7 @@ export function SignupForm({
                   {...register("confirmPassword")}
                 />
                 {errors.confirmPassword && (
-                  <p className="text-destructive text-sm italic">
+                  <p className="error-message">
                     {errors.confirmPassword.message}
                   </p>
                 )}
