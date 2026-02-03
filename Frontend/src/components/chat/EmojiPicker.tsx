@@ -1,8 +1,7 @@
 import { useThemeStore } from "@/stores/useThemeStore";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Smile } from "lucide-react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
+import EmojiPickerReact, {type EmojiClickData, Theme } from "emoji-picker-react";
 
 interface EmojiPickerProps {
   onChange: (value: string) => void;
@@ -18,17 +17,19 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
       </PopoverTrigger>
 
       <PopoverContent
-        className="bg-transparent border-none shadow-none drop-shadow-none mb-12"
+        className="bg-transparent border-none shadow-none drop-shadow-none mb-12 p-0"
         side="right"
         sideOffset={40}
       >
-        <Picker
-          theme={isDark ? "dark" : "light"}
-          data={data}
-          onEmojiSelect={(emoji: any) => {
-            onChange(emoji.native);
+        <EmojiPickerReact
+          theme={isDark ? Theme.DARK : Theme.LIGHT}
+          onEmojiClick={(emojiData: EmojiClickData) => {
+            onChange(emojiData.emoji);
           }}
-          emojiSize={24}
+          height={350}
+          width={300}
+          searchDisabled={false}
+          previewConfig={{ showPreview: false }}
         />
       </PopoverContent>
     </Popover>

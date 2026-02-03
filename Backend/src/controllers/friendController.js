@@ -55,7 +55,7 @@ export const sendFriendRequest = async (req, res) => {
     console.log("đã tạo");
     return res
       .status(201)
-      .json({ messgae: "Gửi lời mời kết bạn thành công", request });
+      .json({ message: "Gửi lời mời kết bạn thành công", request });
   } catch (error) {
     console.error("lỗi khi gửi yêu cầu kết bạn", error);
     return res.status(500).json({ message: "lỗi hệ thống" });
@@ -71,13 +71,13 @@ export const acceptFriendRequest = async (req, res) => {
     if (!request) {
       return res
         .status(404)
-        .json({ messgae: "Không tìm thấy lời mời kết bạn" });
+        .json({ message: "Không tìm thấy lời mời kết bạn" });
     }
 
     if (request.to.toString() !== userId.toString()) {
       return res
         .status(403)
-        .json({ messgae: "Bạn không có quyền chấp nhận lời mời này" });
+        .json({ message: "Bạn không có quyền chấp nhận lời mời này" });
     }
 
     const [userA, userB] = swapFriend(request.from, request.to);
@@ -93,14 +93,14 @@ export const acceptFriendRequest = async (req, res) => {
       .lean();
 
     return res.status(200).json({
-      messgae: "Chấp nhận lời mời kết bạn thành công",
+      message: "Chấp nhận lời mời kết bạn thành công",
       newFriend: {
         ...from,
       },
     });
   } catch (error) {
     console.error("lỗi khi chấp nhận yêu cầu kết bạn", error);
-    return res.status(500).json({ messgae: "lỗi hệ thống" });
+    return res.status(500).json({ message: "lỗi hệ thống" });
   }
 };
 
@@ -113,21 +113,21 @@ export const declineFriendRequest = async (req, res) => {
     if (!request) {
       return res
         .status(404)
-        .json({ messgae: "Không tìm thấy lời mời kết bạn" });
+        .json({ message: "Không tìm thấy lời mời kết bạn" });
     }
 
     if (request.to.toString() !== userId.toString()) {
       return res
         .status(403)
-        .json({ messgae: "Bạn không có quyền từ chối lời mời này" });
+        .json({ message: "Bạn không có quyền từ chối lời mời này" });
     }
 
     await FriendRequest.findByIdAndDelete(requestId);
 
-    return res.status(204);
+    return res.status(204).json({ message: "Đã từ chối yêu cầu kết bạn" });;
   } catch (error) {
     console.error("lỗi khi từ chối yêu cầu kết bạn", error);
-    return res.status(500).json({ messgae: "lỗi hệ thống" });
+    return res.status(500).json({ message: "lỗi hệ thống" });
   }
 };
 
@@ -160,7 +160,7 @@ export const getAllFriends = async (req, res) => {
     return res.status(200).json({ friends });
   } catch (error) {
     console.error("lỗi khi lấy danh sách bạn bè", error);
-    return res.status(500).json({ messgae: "lỗi hệ thống" });
+    return res.status(500).json({ message: "lỗi hệ thống" });
   }
 };
 
@@ -171,13 +171,13 @@ export const getFriendRequests = async (req, res) => {
     const populateFields = "_id userName displayName avatarUrl";
 
     const [send, received] = await Promise.all([
-      FriendRequest.find({ from: userId }).populate("from", populateFields),
-      FriendRequest.find({ to: userId }).populate("to", populateFields),
+      FriendRequest.find({ from: userId }).populate("to", populateFields),
+      FriendRequest.find({ to: userId }).populate("from", populateFields),
     ]);
 
     return res.status(200).json({ send, received });
   } catch (error) {
     console.error("lỗi khi lấy danh sách yêu cầu kết bạn", error);
-    return res.status(500).json({ messgae: "lỗi hệ thống" });
+    return res.status(500).json({ message: "lỗi hệ thống" });
   }
 };
