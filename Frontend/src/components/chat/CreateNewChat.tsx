@@ -18,7 +18,7 @@ const CreateNewChat = () => {
         onClick={handleGetFriends}
       >
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <div className="flex gap-4 items-center">
               <div
                 className="size-8 bg-gradient-chat rounded-full flex items-center justify-center
