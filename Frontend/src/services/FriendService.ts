@@ -24,11 +24,16 @@ export const friendService = {
 
   async acceptRequest(requestId: string) {
     const res = await api.post(`/friends/request/${requestId}/accept`);
-    return res.data.newFriend
+    return res.data.newFriend;
   },
 
   async declineRequest(requestId: string) {
     const res = await api.post(`/friends/request/${requestId}/decline`);
-    return res.data.message
+    return res.data.message;
+  },
+
+  async getAllFriend() {
+    const res = await api.get(`/friends`);
+    return res.data.friends
   },
 };

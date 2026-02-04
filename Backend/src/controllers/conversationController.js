@@ -71,8 +71,18 @@ export const createConversation = async (req, res) => {
         select: "displayName avatarUrl",
       },
     ]);
+    const participants = (conversation.participants || []).map((p) => ({
+      userId: p.userId?._id,
+      displayName: p.userId?.displayName,
+      avatarUrl: p.userId?.avatarUrl ?? null,
+      joinAt: p.joinAt,
+    }));
+    const formatted = {
+      ...conversation.toObject(),
+      participants,
+    };
 
-    return res.status(201).json({ conversation });
+    return res.status(201).json({ conversation: formatted });
   } catch (error) {
     console.error("Lỗi khi tạo hội thoại", error);
     return res.status(500).json({ message: "Lỗi hệ thống" });

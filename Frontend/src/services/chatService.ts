@@ -1,7 +1,7 @@
 import api from "@/lib/axios";
 import type { ConversationResponse, Message } from "../types/chat";
 
-const PAGELIMIT = 20;
+const PAGELIMIT = 50;
 
 interface fetchMessageProps {
   messages: Message[];
@@ -57,5 +57,18 @@ export const chatService = {
     });
 
     return res.data;
+  },
+
+  async createConversation(
+    type: "direct" | "group",
+    name: string,
+    memberIds: string[],
+  ) {
+    const res = await api.post(`/conversations`, {
+      type,
+      name,
+      memberIds,
+    });
+    return res.data.conversation
   },
 };

@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useAuthStore } from "./useAuthStore";
 import type { Conversation } from "@/types/chat";
+import { useSocketStore } from "./useSocketStore";
 
 export const useChatStore = create<ChatState>()(
   persist(
@@ -92,7 +93,7 @@ export const useChatStore = create<ChatState>()(
             imgUrl,
             activeConversationId ?? undefined,
           );
-      
+
           set((state) => ({
             conversations: state.conversations.map((c: Conversation) =>
               c._id === activeConversationId ? { ...c, seenBy: [] } : c,
@@ -196,8 +197,38 @@ export const useChatStore = create<ChatState>()(
           console.error("Lỗi xảy ra khi gọi markAsSeen", error);
         }
       },
-    }),
+      addConvo: (convo) => {
+        set((state) => {
+          const exists = state.conversations.some(
+            (c) => convo._id.toString() === c._id.toString(),
+          );
 
+          return {
+            conversations: exists
+              ? state.conversations
+              : [convo, ...state.conversations],
+            activeConversationId: convo._id,
+          };
+        });
+      },
+      createConversation: async (type, name, memberIds) => {
+        try {
+          const conversation = await chatService.createConversation(
+            type,
+            name,
+            memberIds,
+          );
+
+          get().addConvo(conversation);
+
+          useSocketStore
+            .getState()
+            .socket?.emit("join-conversation", conversation._id);
+        } catch (error) {
+          console.error("Lỗi xảy ra khi gọi createConversation", error);
+        }
+      },
+    }),
     {
       name: "chat-storage",
       partialize: (state) => ({ conversations: state.conversations }),

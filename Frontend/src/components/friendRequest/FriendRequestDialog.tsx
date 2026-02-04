@@ -13,7 +13,7 @@ import { Users } from "lucide-react";
 
 interface FriendRequestDialogProps {
   open: boolean;
-  setOpent: Dispatch<SetStateAction<boolean>>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const FriendRequestDialog = ({ open, setOpen }: FriendRequestDialogProps) => {
