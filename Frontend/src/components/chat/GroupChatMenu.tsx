@@ -1,4 +1,4 @@
-import { ArrowBigRight, MoreVertical } from "lucide-react";
+import { ArrowBigRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,11 +7,15 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-const GroupChatMenu = () => {
+interface GroupChatMenuProps{
+  buttonTrigger:React.ReactNode
+}
+
+const GroupChatMenu = ({buttonTrigger}:GroupChatMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <MoreVertical />
+       {buttonTrigger}
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>

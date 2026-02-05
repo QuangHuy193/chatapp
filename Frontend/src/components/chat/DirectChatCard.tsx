@@ -8,6 +8,7 @@ import StatusBadge from "./StatusBadge";
 import UnreadCountBadge from "./UnreadCountBadge";
 import { useSocketStore } from "@/stores/useSocketStore";
 import { APP_NAME } from "@/lib/constant";
+import { MoreHorizontal } from "lucide-react";
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
@@ -77,6 +78,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
             {lastMessage}
           </p>
         }
+        menu={<MoreHorizontal className="size-4 text-muted-foreground " />}
       />
     </div>
   );

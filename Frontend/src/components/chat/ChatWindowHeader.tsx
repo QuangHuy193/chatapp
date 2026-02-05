@@ -9,6 +9,7 @@ import StatusBadge from "./StatusBadge";
 import GroupChatAvatar from "./GroupChatAvatar";
 import { useSocketStore } from "@/stores/useSocketStore";
 import GroupChatMenu from "./GroupChatMenu";
+import { MoreVertical } from "lucide-react";
 
 const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
   const { activeConversationId, conversations } = useChatStore();
@@ -80,7 +81,7 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
       </div>
 
       <div className="md:hidden">
-        <GroupChatMenu/>
+        <GroupChatMenu buttonTrigger={<MoreVertical />} />
       </div>
     </header>
   );

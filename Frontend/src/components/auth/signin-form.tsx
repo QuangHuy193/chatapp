@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 // điều kiện form đăng nhập
 const signInSchema = z.object({
@@ -30,12 +32,16 @@ export function SigninForm({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
   });
   const { signIn } = useAuthStore();
   const navigate = useNavigate();
+  const [isShowPass, setIsShowPass] = useState(false);
+
+  const passwordValue = watch("password");
 
   const onSubmit = async (data: SignInFormValues) => {
     const { userName, password } = data;
@@ -70,23 +76,40 @@ export function SigninForm({
                 <FieldLabel htmlFor="userName">Tên đăng nhập</FieldLabel>
                 <Input id="userName" type="text" {...register("userName")} />
                 {errors.userName && (
-                  <p className="error-message">
-                    {errors.userName.message}
-                  </p>
+                  <p className="error-message">{errors.userName.message}</p>
                 )}
               </Field>
 
               <Field>
                 <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
-                <Input
-                  id="password"
-                  type="password"
-                  {...register("password")}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={isShowPass ? "text" : "password"}
+                    {...register("password")}
+                  />                  
+
+                  {passwordValue ? (
+                    isShowPass ? (
+                      <EyeOff
+                        className="absolute right-2 top-1/2 -translate-y-1/2 size-5"
+                        onClick={() => setIsShowPass(false)}
+                      />
+                    ) : (
+                      <Eye
+                        className="absolute right-2 top-1/2 -translate-y-1/2 size-5"
+                        onClick={() => {
+                          setIsShowPass(true);
+                        }}
+                      />
+                    )
+                  ) : (
+                    ""
+                  )}
+                  
+                </div>
                 {errors.password && (
-                  <p className="error-message">
-                    {errors.password.message}
-                  </p>
+                  <p className="error-message">{errors.password.message}</p>
                 )}
               </Field>
 

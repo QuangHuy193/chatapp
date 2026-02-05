@@ -1,5 +1,4 @@
 import { formatOnlineTime, cn } from "@/lib/utils";
-import { MoreHorizontal } from "lucide-react";
 import type React from "react";
 import { Card } from "../ui/card";
 
@@ -12,6 +11,7 @@ interface ChatCardProps {
   unreadCount?: number;
   leftSection: React.ReactNode; //avatar
   subtitle: React.ReactNode; //mô tả bên phải
+  menu: React.ReactNode; // menu cho covo
 }
 
 const ChatCard = ({
@@ -23,6 +23,7 @@ const ChatCard = ({
   unreadCount,
   leftSection,
   subtitle,
+  menu,
 }: ChatCardProps) => {
   return (
     <Card
@@ -56,14 +57,13 @@ const ChatCard = ({
             <div className="flex items-center gap-1 flex-1 min-w-0">
               {subtitle}
             </div>
-            <MoreHorizontal
-              onClick={() => {
-                // TODO thêm menu 
-                console.log("MoreHorizontal");
-              }}
-              className="size-4 text-muted-foreground opacity-0 
-            group-hover:opacity-100 hover:size-5 transition-smooth"
-            />
+
+            <div
+              className="opacity-0 size-4
+            group-hover:opacity-100 hover:scale-120 transition-smooth"
+            >
+              {menu}
+            </div>
           </div>
         </div>
       </div>

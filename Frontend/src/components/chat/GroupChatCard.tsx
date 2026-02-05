@@ -4,8 +4,10 @@ import type { Conversation } from "@/types/chat";
 import ChatCard from "./ChatCard";
 import UnreadCountBadge from "./UnreadCountBadge";
 import GroupChatAvatar from "./GroupChatAvatar";
+import GroupChatMenu from "./GroupChatMenu";
+import { MoreHorizontal } from "lucide-react";
 
-const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
+const GroupChatCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
   const {
     activeConversationId,
@@ -50,9 +52,16 @@ const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
             {convo.participants.length} thành viên
           </p>
         }
+        menu={
+          <GroupChatMenu
+            buttonTrigger={
+              <MoreHorizontal className="size-4 text-muted-foreground " />
+            }
+          />
+        }
       />
     </div>
   );
 };
 
-export default GroupMessageCard;
+export default GroupChatCard;
