@@ -5,7 +5,7 @@ import { Camera } from "lucide-react";
 
 const UploadAvatar = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { updatedAvatarUrl } = useUserStore();
+  const { updatedAvatarUrl, loadingAvatar } = useUserStore();
 
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -31,8 +31,9 @@ const UploadAvatar = () => {
         size="icon"
         variant="secondary"
         onClick={handleClick}
+        disabled={loadingAvatar}
       >
-        <Camera className="size-5"/>
+        {loadingAvatar ? "..." : <Camera className="size-5" />}
       </Button>
 
       <input type="file" hidden ref={fileInputRef} onChange={handleUpload} />

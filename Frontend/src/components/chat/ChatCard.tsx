@@ -57,6 +57,10 @@ const ChatCard = ({
               {subtitle}
             </div>
             <MoreHorizontal
+              onClick={() => {
+                // TODO thêm menu 
+                console.log("MoreHorizontal");
+              }}
               className="size-4 text-muted-foreground opacity-0 
             group-hover:opacity-100 hover:size-5 transition-smooth"
             />

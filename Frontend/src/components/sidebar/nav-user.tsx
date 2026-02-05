@@ -1,4 +1,4 @@
-import { Bell, ChevronsUpDown, LogOut, UserIcon } from "lucide-react";
+import { Bell, ChevronsUpDown, LogOut, UserIcon, UserPlus } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -79,6 +79,10 @@ export function NavUser({ user }: { user: User }) {
                   Tài khoản
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setFriendRequestOpen(true)}>
+                  <UserPlus className="text-muted-foreground dark:group-focus:text-accent-foreground" />
+                  Lời mời kết bạn
+                </DropdownMenuItem>
+                <DropdownMenuItem>
                   <Bell className="text-muted-foreground dark:group-focus:text-accent-foreground" />
                   Thông báo
                 </DropdownMenuItem>

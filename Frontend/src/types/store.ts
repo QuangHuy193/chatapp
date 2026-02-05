@@ -93,5 +93,6 @@ export interface FriendState {
 }
 
 export interface UserState {
+  loadingAvatar:boolean,
   updatedAvatarUrl: (formData: FormData) => Promise<void>;
 }

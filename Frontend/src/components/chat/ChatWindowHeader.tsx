@@ -8,11 +8,12 @@ import { APP_NAME } from "@/lib/constant";
 import StatusBadge from "./StatusBadge";
 import GroupChatAvatar from "./GroupChatAvatar";
 import { useSocketStore } from "@/stores/useSocketStore";
+import GroupChatMenu from "./GroupChatMenu";
 
 const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
   const { activeConversationId, conversations } = useChatStore();
   const { user } = useAuthStore();
-  const { onlineUsers } = useSocketStore();  
+  const { onlineUsers } = useSocketStore();
 
   chat = chat ?? conversations.find((c) => c._id === activeConversationId);
 
@@ -76,6 +77,10 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
             {chat.type === "direct" ? otherUser?.displayName : chat.group?.name}
           </h2>
         </div>
+      </div>
+
+      <div className="md:hidden">
+        <GroupChatMenu/>
       </div>
     </header>
   );

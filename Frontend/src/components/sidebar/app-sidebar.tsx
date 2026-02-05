@@ -7,7 +7,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
@@ -25,10 +24,13 @@ import DirectChatList from "../chat/DirectChatList";
 import { useThemeStore } from "@/stores/useThemeStore";
 import { NavUser } from "./nav-user";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useChatStore } from "@/stores/useChatStore";
+import ConversationSkeletonLoading from "../skeleton/ConversationSkeletonLoading";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { isDark, toggleTheme } = useThemeStore();
   const { user } = useAuthStore();
+  const { convoLoading } = useChatStore();
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -81,7 +83,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </div>
 
           <SidebarGroupContent>
-            <GroupChatList />
+            {convoLoading ? <ConversationSkeletonLoading /> : <GroupChatList />}
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -94,7 +96,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </div>
 
           <SidebarGroupContent>
-            <DirectChatList />
+            {convoLoading ? (
+              <ConversationSkeletonLoading />
+            ) : (
+              <DirectChatList />
+            )}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

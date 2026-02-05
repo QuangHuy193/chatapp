@@ -6,9 +6,11 @@ import { toast } from "sonner";
 import { useChatStore } from "./useChatStore";
 
 export const useUserStore = create<UserState>((set, get) => ({
+  loadingAvatar: false,
   updatedAvatarUrl: async (formData) => {
     try {
       const { user, setUser } = useAuthStore.getState();
+      set({ loadingAvatar: true });
       const data = await userService.uploadAvatar(formData);
 
       if (user) {
@@ -17,13 +19,15 @@ export const useUserStore = create<UserState>((set, get) => ({
           avatarUrl: data.avatarUrl,
         });
 
-        useChatStore.getState().fetchConversations()
+        useChatStore.getState().fetchConversations();
       }
 
       toast.success("Upload avatar thành công.");
     } catch (error) {
       console.error("Lỗi khi upload avatar", error);
       toast.error("Upload avatar không thành công!");
+    } finally {
+      set({ loadingAvatar: false });
     }
   },
 }));

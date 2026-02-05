@@ -30,9 +30,12 @@ const FormProfileInfo = ({ user }: FormProfileInfoProps) => {
   return (
     <Card className="overflow-y-auto max-h-70 beautiful-scrollbar">
       <CardHeader>
-        <CardTitle className="flex items-center gap-1 borber border-b pb-2">
+        <CardTitle className="flex items-center gap-1 ">
           <UserPen /> <span>Thông tin cá nhân</span>
         </CardTitle>
+        <CardDescription className="borber border-b pb-2">
+          Tùy chỉnh thông tin cá nhân
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
