@@ -2,6 +2,7 @@ import Friend from "../models/Friend.js";
 import User from "../models/User.js";
 import FriendRequest from "../models/FriendRequset.js";
 import { swapFriend } from "../util/friendHelper.js";
+import { io } from "../socket/index.js";
 
 export const sendFriendRequest = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ export const sendFriendRequest = async (req, res) => {
     }
 
     let userA = from.toString();
-    let userB = to.toString();   
+    let userB = to.toString();
 
     // chạy song song 2 request
     const [alreadyFriends, existingRequest] = await Promise.all([
@@ -52,7 +53,9 @@ export const sendFriendRequest = async (req, res) => {
       to: userB,
       message,
     });
-    console.log("đã tạo");
+
+    io.to(to.toString()).emit("friend-rece");
+
     return res
       .status(201)
       .json({ message: "Gửi lời mời kết bạn thành công", request });
@@ -124,7 +127,7 @@ export const declineFriendRequest = async (req, res) => {
 
     await FriendRequest.findByIdAndDelete(requestId);
 
-    return res.status(204).json({ message: "Đã từ chối yêu cầu kết bạn" });;
+    return res.status(204).json({ message: "Đã từ chối yêu cầu kết bạn" });
   } catch (error) {
     console.error("lỗi khi từ chối yêu cầu kết bạn", error);
     return res.status(500).json({ message: "lỗi hệ thống" });

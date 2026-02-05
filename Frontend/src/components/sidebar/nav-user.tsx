@@ -21,9 +21,12 @@ import Logout from "../auth/Logout";
 import { useState } from "react";
 import FriendRequestDialog from "../friendRequest/FriendRequestDialog";
 import ProfileDialog from "../profile/ProfileDialog";
+import { useFriendStore } from "@/stores/useFriendStore";
+import { Badge } from "../ui/badge";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
+  const { receivedList } = useFriendStore();
   const [friendRequestOpen, setFriendRequestOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -47,7 +50,21 @@ export function NavUser({ user }: { user: User }) {
                   </span>
                   <span className="truncate text-xs">{user.userName}</span>
                 </div>
-                <ChevronsUpDown className="ml-auto size-4" />
+                <div className="relative">
+                  <ChevronsUpDown className="ml-auto size-5" />
+                  {receivedList.length > 0 && (
+                    <div className="pulse-ring absolute z-20 -top-1.5 -right-1.5">
+                      <Badge
+                        className="size-4 text-xs bg-destructive border flex items-center 
+                      justify-center p-0 border-background"
+                      >
+                        {receivedList.length > 99
+                          ? `${receivedList.length}+` 
+                          : receivedList.length}
+                      </Badge>
+                    </div>
+                  )}
+                </div>
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -78,9 +95,23 @@ export function NavUser({ user }: { user: User }) {
                   <UserIcon className="text-muted-foreground dark:group-focus:text-accent-foreground" />
                   Tài khoản
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFriendRequestOpen(true)}>
+                <DropdownMenuItem
+                  onClick={() => setFriendRequestOpen(true)}
+                  className="relative"
+                >
                   <UserPlus className="text-muted-foreground dark:group-focus:text-accent-foreground" />
                   Lời mời kết bạn
+                  {receivedList && receivedList.length > 0 && (
+                    <span
+                      className="absolute h-4 w-4 bg-destructive rounded-full text-white 
+                      justify-center items-center flex right-1 top-1/2 -translate-y-1/2 
+                      pulse-ring"
+                    >
+                      {receivedList.length > 99
+                        ? `${receivedList.length}+`
+                        : receivedList.length}
+                    </span>
+                  )}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Bell className="text-muted-foreground dark:group-focus:text-accent-foreground" />

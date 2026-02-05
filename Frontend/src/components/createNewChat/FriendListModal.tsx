@@ -32,8 +32,8 @@ const FriendListModal = () => {
         </h1>
 
         {!friends || friends.length === 0 ? (
-          <div className="flex text-center py-8 text-muted-foreground">
-            <Users className="size-12 mx-auto mb-3 opacity-50" />
+          <div className="flex py-8 text-muted-foreground justify-center items-center">
+            <Users className="size-12 mr-1 opacity-50" />
             Chưa có bạn bè. Hãy thêm bạn bè để trò chuyện nào!!!
           </div>
         ) : (
