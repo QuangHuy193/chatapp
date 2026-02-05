@@ -4,7 +4,7 @@ import UserAvatar from "../chat/UserAvatar";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { useSocketStore } from "@/stores/useSocketStore";
-import UploadAvatar from "./uploadAvatar";
+import UploadAvatar from "./UploadAvatar";
 
 interface ProfileCardProps {
   user: User | null;
