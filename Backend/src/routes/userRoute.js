@@ -1,9 +1,16 @@
 import express from "express";
-import { authMe, searchUserByUserName } from "../controllers/userController.js";
+import {
+  authMe,
+  searchUserByUserName,
+  uploadAvatar,
+} from "../controllers/userController.js";
+import { upload } from "../middlewares/uploadImageMiddleware.js";
 
 const router = express.Router();
 
 router.get("/me", authMe);
 router.get("/search", searchUserByUserName);
+
+router.post("/uploadAvatar", upload.single("file"), uploadAvatar);
 
 export default router;

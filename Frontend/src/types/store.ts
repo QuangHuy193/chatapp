@@ -19,6 +19,7 @@ export interface authState {
   signOut: () => Promise<boolean>;
   fetchMe: () => Promise<void>;
   refreshToken: () => Promise<void>;
+  setUser: (user: User) => void;
 }
 
 export interface ThemeState {
@@ -39,7 +40,7 @@ export interface ChatState {
   >;
   activeConversationId: string | null;
   convoLoading: boolean;
-  loading:boolean;
+  loading: boolean;
   messageLoading: boolean;
 
   reset: () => void;
@@ -89,4 +90,8 @@ export interface FriendState {
   acceptRequest: (requestId: string) => Promise<void>;
   declineRequest: (requestId: string) => Promise<void>;
   getAllFriend: () => Promise<void>;
+}
+
+export interface UserState {
+  updatedAvatarUrl: (formData: FormData) => Promise<void>;
 }

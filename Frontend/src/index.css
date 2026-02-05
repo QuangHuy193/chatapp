@@ -224,6 +224,7 @@
     @apply backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20;
   }
 
+
   .glass-strong {
     @apply backdrop-blur-2xl bg-gradient-to-br from-card/90 to-card/60 border border-border/70;
   }
@@ -242,8 +243,8 @@
     @apply text-sm text-destructive italic;
   }
 
-  .success-message{
-    @apply text-sm text-emerald-500
+  .success-message {
+    @apply text-sm text-emerald-500;
   }
 
   /* Status indicators */

@@ -30,6 +30,12 @@ export const useAuthStore = create<authState>()(
         set({ accessToken });
       },
 
+      setUser: (user) => {
+        set({
+          user,
+        });
+      },
+
       signUp: async (userName, firstName, lastName, email, password) => {
         try {
           set({ loading: true });
