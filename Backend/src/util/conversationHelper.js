@@ -18,8 +18,18 @@ export const mapCoversation = async (conversations) => {
         }),
       );
 
+      const lastMsg = conver.lastMessage?.toObject();
+
+      const { senderId, ...restLastMsg } = lastMsg || {};
+
       return {
         ...conver.toObject(),
+        lastMessage: lastMsg
+          ? {
+              ...restLastMsg,
+              sender: senderId,
+            }
+          : null,
         unreadCount: conver.unreadCount || {},
         participants,
       };

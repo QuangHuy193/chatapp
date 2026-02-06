@@ -69,7 +69,7 @@ export const createConversation = async (req, res) => {
       },
       {
         path: "lastMessage.senderId",
-        select: "displayName avatarUrl rankTypeId rankTypeLevelId",
+        select: "displayName avatarUrl",
       },
     ]);
 
@@ -119,11 +119,11 @@ export const getConversation = async (req, res) => {
         },
         {
           path: "lastMessage.senderId",
-          select: "displayName avatarUrl rankTypeId rankTypeLevelId",
+          select: "displayName avatarUrl",
         },
       ]);
 
-    const formatted =await mapCoversation(conversations);
+    const formatted = await mapCoversation(conversations);
    
     return res.status(200).json({ conversations: formatted });
   } catch (error) {

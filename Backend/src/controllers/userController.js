@@ -6,7 +6,7 @@ export const authMe = async (req, res) => {
   try {
     const user = req.user; // từ middleware
     const userFormat = await mapUserWithRank(user);
-   
+
     return res.status(200).json({ user: userFormat });
   } catch (error) {
     console.error(`Lỗi khi gọi authme`, error);
@@ -72,3 +72,5 @@ export const uploadAvatar = async (req, res) => {
     });
   }
 };
+
+export const updateRankType = async (req, res) => {};

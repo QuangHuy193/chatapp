@@ -36,6 +36,9 @@ export const signUp = async (req, res) => {
       hashedPassword,
       email,
       displayName: `${lastName} ${firstName}`,
+      activePoint: 0,
+      rankTypeId: "mac-dinh",
+      rankTypeLevelId: "mac-dinh-1",
     });
 
     return res.sendStatus(204);

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const rankTypeSchema = mongoose.Schema(
+const rankTypeSchema = mongoose.Schema(
   {
     _id: {
       type: String,

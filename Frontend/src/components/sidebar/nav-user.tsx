@@ -23,7 +23,7 @@ import FriendRequestDialog from "../friendRequest/FriendRequestDialog";
 import ProfileDialog from "../profile/ProfileDialog";
 import { useFriendStore } from "@/stores/useFriendStore";
 import { Badge } from "../ui/badge";
-import RankLabel from "../profile/RankLabel";
+import RankLabel from "../rankLabel/RankLabel";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
@@ -36,6 +36,12 @@ export function NavUser({ user }: { user: User }) {
       <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu>
+            <div className="flex md:hidden justify-center items-center py-2">
+              <RankLabel
+                rankCss={user.rank?.level.uiCss ?? ""}
+                label={user.rank?.level.label ?? ""}
+              />
+            </div>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size="lg"
@@ -48,16 +54,19 @@ export function NavUser({ user }: { user: User }) {
                     {user.displayName.slice(0, 1)}
                   </AvatarFallback>
                 </Avatar>
+
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <div className="flex gap-11">
                     <span className="truncate font-medium flex items-end">
                       <span> {user.displayName}</span>
                     </span>
 
-                    <RankLabel
-                      rankCss={user.rank?.level.uiCss ?? ""}
-                      label={user.rank?.level.label ?? ""}
-                    />
+                    <div className="hidden md:block">
+                      <RankLabel
+                        rankCss={user.rank?.level.uiCss ?? ""}
+                        label={user.rank?.level.label ?? ""}
+                      />
+                    </div>
                   </div>
                   <span className="truncate text-xs">{user.userName}</span>
                 </div>

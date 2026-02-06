@@ -1,6 +1,6 @@
 import type { Friend } from "@/types/user";
 import UserAvatar from "../chat/UserAvatar";
-import RankLabel from "../profile/RankLabel";
+import RankLabel from "../rankLabel/RankLabel";
 
 interface InviteSuggestionListProps {
   fillterFriends: Friend[];

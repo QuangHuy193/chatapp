@@ -342,7 +342,7 @@
   }
 
   .rank-core {
-    @apply relative z-10 px-2 text-sm font-semibold;
+    @apply relative z-10 px-2 text-sm font-semibold text-center;
   }
 
   .rank-crown {
@@ -456,51 +456,51 @@
   /* RANK 45 */
   .rank-4 .rank-core,
   .rank-5 .rank-core {
-    @apply text-violet-200;
+    @apply text-emerald-300;
   }
 
   .rank-4 .rank-wing,
   .rank-5 .rank-wing {
-    color: rgb(168 85 247);
-    background: linear-gradient(to right, transparent, rgba(168, 85, 247, 0.6));
-    animation: glow-fade 2.8s ease-in-out infinite;
-  }
-
-  .rank-4 .rank-wing-right,
-  .rank-5 .rank-wing-right {
-    background: linear-gradient(to left, transparent, rgba(168, 85, 247, 0.6));
-  }
-
-  .rank-4 .rank-underline,
-  .rank-5 .rank-underline {
-    color: rgb(168 85 247);
-    background: rgba(168, 85, 247, 0.7);
-    animation: underline-fade 3s ease-in-out infinite;
-  }
-
-  /* RANK 67 */
-  .rank-6 .rank-core,
-  .rank-7 .rank-core {
-    @apply text-emerald-300;
-  }
-
-  .rank-6 .rank-wing,
-  .rank-7 .rank-wing {
     color: rgb(52 211 153);
     background: linear-gradient(to right, transparent, rgba(52, 211, 153, 0.8));
     animation: glow-fade 2.2s ease-in-out infinite;
   }
 
+  .rank-4 .rank-wing-right,
+  .rank-5 .rank-wing-right {
+    background: linear-gradient(to left, transparent, rgba(52, 211, 153, 0.8));
+  }
+
+  .rank-4 .rank-underline,
+  .rank-5 .rank-underline {
+    color: rgb(52 211 153);
+    background: rgba(52, 211, 153, 0.9);
+    animation: underline-fade 2.4s ease-in-out infinite;
+  }
+
+  /* RANK 67 */
+  .rank-6 .rank-core,
+  .rank-7 .rank-core {
+    @apply text-violet-200;
+  }
+
+  .rank-6 .rank-wing,
+  .rank-7 .rank-wing {
+    color: rgb(168 85 247);
+    background: linear-gradient(to right, transparent, rgba(168, 85, 247, 0.6));
+    animation: glow-fade 2.8s ease-in-out infinite;
+  }
+
   .rank-6 .rank-wing-right,
   .rank-7 .rank-wing-right {
-    background: linear-gradient(to left, transparent, rgba(52, 211, 153, 0.8));
+    background: linear-gradient(to left, transparent, rgba(168, 85, 247, 0.6));
   }
 
   .rank-6 .rank-underline,
   .rank-7 .rank-underline {
-    color: rgb(52 211 153);
-    background: rgba(52, 211, 153, 0.9);
-    animation: underline-fade 2.4s ease-in-out infinite;
+    color: rgb(168 85 247);
+    background: rgba(168, 85, 247, 0.7);
+    animation: underline-fade 3s ease-in-out infinite;
   }
 
   /* RANK 89 */
@@ -529,7 +529,7 @@
   }
 
   /* RANK 10 */
-   .rank-10 {
+  .rank-10 {
     padding-top: 10px; /* chừa chỗ cho vương miện */
   }
 

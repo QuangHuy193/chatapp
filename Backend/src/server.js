@@ -14,6 +14,7 @@ import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import { app, server } from "./socket/index.js";
 import { v2 as cloudinary } from "cloudinary";
+import rankTypeRoute from "./routes/rankTypeRoute.js";
 
 const PORT = process.env.PORT || 3456;
 
@@ -45,6 +46,7 @@ app.use(`/api/users`, userRoute);
 app.use(`/api/friends`, friendRoute);
 app.use(`/api/messages`, messageRoute);
 app.use(`/api/conversations`, conversationRoute);
+app.use(`/api/ranks`, rankTypeRoute);
 
 connectDB().then(() => {
   server.listen(PORT, () => {

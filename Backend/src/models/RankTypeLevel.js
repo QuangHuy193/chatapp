@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const rankTypeLevelSchema = mongoose.Schema(
+const rankTypeLevelSchema = mongoose.Schema(
   {
     _id: {
       type: String,
@@ -29,8 +29,8 @@ export const rankTypeLevelSchema = mongoose.Schema(
       required: true,
     },
     uiCss: {
-      type: String, // lưu class dạng "tu-tien-1", file css định dạng class dùng chung      
-    },   
+      type: String, // lưu class dạng "tu-tien-1", file css định dạng class dùng chung
+    },
   },
   {
     timestamps: true,

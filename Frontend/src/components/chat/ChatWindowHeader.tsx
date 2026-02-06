@@ -10,6 +10,7 @@ import GroupChatAvatar from "./GroupChatAvatar";
 import { useSocketStore } from "@/stores/useSocketStore";
 import GroupChatMenu from "./GroupChatMenu";
 import { MoreVertical } from "lucide-react";
+import RankLabel from "../rankLabel/RankLabel";
 
 const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
   const { activeConversationId, conversations } = useChatStore();
@@ -75,13 +76,28 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
 
           {/* name */}
           <h2 className="font-semibold text-foreground">
-            {chat.type === "direct" ? otherUser?.displayName : chat.group?.name}
+            {chat.type === "direct" ? (
+              <div className="flex items-center ml-6 flex-col gap-2">
+                {otherUser?.rank?.level.label &&
+                  otherUser?.rank?.level.uiCss && (
+                    <RankLabel
+                      label={otherUser?.rank?.level.label}
+                      rankCss={otherUser?.rank?.level.uiCss}
+                    />
+                  )}
+                <span>{otherUser?.displayName}</span>
+              </div>
+            ) : (
+              chat.group?.name
+            )}
           </h2>
         </div>
       </div>
 
       <div className="md:hidden">
-        <GroupChatMenu buttonTrigger={<MoreVertical />} />
+        {chat.type === "group" && (
+          <GroupChatMenu buttonTrigger={<MoreVertical />} />
+        )}
       </div>
     </header>
   );

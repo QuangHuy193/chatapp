@@ -15,7 +15,11 @@ const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
   const { user } = useAuthStore();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="overflow-y-auto p-0 bg-transparent border-0 shadow-2xl">
+      <DialogContent
+        onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        className="overflow-y-auto p-0 bg-transparent border-0 shadow-2xl"
+      >
         <div className="bg-gradient-glass">
           <div className="max-w-4xl mx-auto p-4">
             {/* heading */}
@@ -52,10 +56,10 @@ const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
               </TabsList>
 
               <TabsContent value="account">
-                <FormProfileInfo user={user}/>
+                <FormProfileInfo user={user} />
               </TabsContent>
               <TabsContent value="config">
-                <ProfileConfigCard/>
+                <ProfileConfigCard />
               </TabsContent>
               <TabsContent value="security">s</TabsContent>
             </Tabs>

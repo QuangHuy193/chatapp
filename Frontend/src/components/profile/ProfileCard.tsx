@@ -5,7 +5,8 @@ import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { useSocketStore } from "@/stores/useSocketStore";
 import UploadAvatar from "./UploadAvatar";
-import RankLabel from "./RankLabel";
+import RankLabel from "../rankLabel/RankLabel";
+import EditRankTypeDialog from "../rankLabel/EditRankTypeDialog";
 
 interface ProfileCardProps {
   user: User | null;
@@ -18,7 +19,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
   const isOnline = onlineUsers.includes(user._id) ? true : false;
   return (
     <Card
-      className="overflow-hidden p-0 h-40 bg-linear-to-r from-indigo-500 
+      className="overflow-hidden max-h-80 bg-linear-to-r from-indigo-500 
     via-purple-500 to-pink-500"
     >
       <CardContent
@@ -38,10 +39,13 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
 
         {/* userinfo */}
         <div className="text-center sm:text-left flex-1">
-          <RankLabel
-            label={user.rank?.level.label ?? ""}
-            rankCss={user.rank?.level.uiCss ?? ""}
-          />
+         <div className="flex gap-7 items-end">
+            <RankLabel
+              label={user.rank?.level.label ?? ""}
+              rankCss={user.rank?.level.uiCss ?? ""}
+            />
+            <EditRankTypeDialog/>
+         </div>
           <h1 className="text-2xl font-semibold tracking-tight text-white">
             {user.displayName}
           </h1>
