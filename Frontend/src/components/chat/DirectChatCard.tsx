@@ -40,6 +40,8 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
       <ChatCard
         convoId={convo._id}
         name={otherUser.displayName ?? APP_NAME}
+        rankLabel={otherUser.rank?.level.label ?? ""}
+        rankCss={otherUser.rank?.level.uiCss ?? ""}
         timmestamp={
           convo.lastMessage?.createdAt
             ? new Date(convo.lastMessage.createdAt)
@@ -75,6 +77,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
                 : "text-muted-foreground",
             )}
           >
+            {convo.lastMessage?.sender._id !== otherUser?.userId && "Bạn: "}
             {lastMessage}
           </p>
         }

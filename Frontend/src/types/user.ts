@@ -6,6 +6,21 @@ export interface User {
   avatarUrl?: string;
   bio?: string;
   phone?: string;
+  activePoint?: number;
+  rank?: {
+    type: {
+      _id: string;
+      name: string;
+    };
+    level: {
+      _id: string;
+      level: number;
+      label: string;
+      minAP: number;
+      maxAP: number;
+      uiCss: string;
+    };
+  };
   createdAt?: string;
   updatedAt?: string;
 }
@@ -15,6 +30,20 @@ export interface Friend {
   userName: string;
   displayName: string;
   avatarUrl?: string;
+  rank?: {
+    type: {
+      _id: string;
+      name: string;
+    };
+    level: {
+      _id: string;
+      level: number;
+      label: string;
+      minAP: number;
+      maxAP: number;
+      uiCss: string;
+    };
+  };
 }
 
 export interface FriendRequest {
@@ -24,12 +53,40 @@ export interface FriendRequest {
     userName: string;
     displayName: string;
     avatarUrl?: string;
+    rank?: {
+      type: {
+        _id: string;
+        name: string;
+      };
+      level: {
+        _id: string;
+        level: number;
+        label: string;
+        minAP: number;
+        maxAP: number;
+        uiCss: string;
+      };
+    };
   };
   to?: {
     _id: string;
     userName: string;
     displayName: string;
     avatarUrl?: string;
+    rank?: {
+      type: {
+        _id: string;
+        name: string;
+      };
+      level: {
+        _id: string;
+        level: number;
+        label: string;
+        minAP: number;
+        maxAP: number;
+        uiCss: string;
+      };
+    };
   };
   message: string;
   createdAt: string;

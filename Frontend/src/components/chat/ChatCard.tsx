@@ -1,10 +1,13 @@
 import { formatOnlineTime, cn } from "@/lib/utils";
 import type React from "react";
 import { Card } from "../ui/card";
+import RankLabel from "../profile/RankLabel";
 
 interface ChatCardProps {
   convoId: string;
   name: string;
+  rankLabel?: string;
+  rankCss?: string;
   timmestamp?: Date;
   isActive: boolean;
   onSelect: (id: string) => void;
@@ -17,6 +20,8 @@ interface ChatCardProps {
 const ChatCard = ({
   convoId,
   name,
+  rankLabel,
+  rankCss,
   timmestamp,
   isActive,
   onSelect,
@@ -40,14 +45,19 @@ const ChatCard = ({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <h3
-              className={cn(
-                `font-semibold text-sm truncate`,
-                unreadCount && unreadCount > 0 && "text-foreground",
+            <div className=" flex gap-11">
+              <h3
+                className={cn(
+                  `font-semibold text-sm truncate`,
+                  unreadCount && unreadCount > 0 && "text-foreground",
+                )}
+              >
+                {name}
+              </h3>
+              {rankLabel && rankCss && (
+                <RankLabel label={rankLabel} rankCss={rankCss} />
               )}
-            >
-              {name}
-            </h3>
+            </div>
             <span className="text-sm text-foreground">
               {timmestamp ? formatOnlineTime(timmestamp) : ""}
             </span>

@@ -1,10 +1,13 @@
 import { uploadImageFromBuffer } from "../middlewares/uploadImageMiddleware.js";
 import User from "../models/User.js";
+import { mapUserWithRank } from "../util/userHelper.js";
 
 export const authMe = async (req, res) => {
   try {
     const user = req.user; // từ middleware
-    return res.status(200).json({ user });
+    const userFormat = await mapUserWithRank(user);
+   
+    return res.status(200).json({ user: userFormat });
   } catch (error) {
     console.error(`Lỗi khi gọi authme`, error);
     res.status(500).json({

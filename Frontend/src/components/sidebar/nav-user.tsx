@@ -23,6 +23,7 @@ import FriendRequestDialog from "../friendRequest/FriendRequestDialog";
 import ProfileDialog from "../profile/ProfileDialog";
 import { useFriendStore } from "@/stores/useFriendStore";
 import { Badge } from "../ui/badge";
+import RankLabel from "../profile/RankLabel";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
@@ -38,16 +39,26 @@ export function NavUser({ user }: { user: User }) {
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                className="data-[state=open]:bg-sidebar-accent
+                data-[state=open]:text-sidebar-accent-foreground"
               >
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatarUrl} alt={user.displayName} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {user.displayName.slice(0, 1)}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
-                    {user.displayName}
-                  </span>
+                  <div className="flex gap-11">
+                    <span className="truncate font-medium flex items-end">
+                      <span> {user.displayName}</span>
+                    </span>
+
+                    <RankLabel
+                      rankCss={user.rank?.level.uiCss ?? ""}
+                      label={user.rank?.level.label ?? ""}
+                    />
+                  </div>
                   <span className="truncate text-xs">{user.userName}</span>
                 </div>
                 <div className="relative">
@@ -59,7 +70,7 @@ export function NavUser({ user }: { user: User }) {
                       justify-center p-0 border-background"
                       >
                         {receivedList.length > 99
-                          ? `${receivedList.length}+` 
+                          ? `${receivedList.length}+`
                           : receivedList.length}
                       </Badge>
                     </div>

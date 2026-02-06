@@ -1,6 +1,7 @@
 import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
 import { io } from "../socket/index.js";
+import { mapCoversation } from "../util/conversationHelper.js";
 
 export const createConversation = async (req, res) => {
   try {
@@ -60,23 +61,27 @@ export const createConversation = async (req, res) => {
     await conversation.populate([
       {
         path: "participants.userId",
-        select: "displayName avatarUrl",
+        select: "displayName avatarUrl rankTypeId rankTypeLevelId",
       },
       {
         path: "seenBy",
-        select: "displayName avatarUrl",
+        select: "displayName avatarUrl rankTypeId rankTypeLevelId",
       },
       {
         path: "lastMessage.senderId",
-        select: "displayName avatarUrl",
+        select: "displayName avatarUrl rankTypeId rankTypeLevelId",
       },
     ]);
+
     const participants = (conversation.participants || []).map((p) => ({
       userId: p.userId?._id,
       displayName: p.userId?.displayName,
       avatarUrl: p.userId?.avatarUrl ?? null,
+      rankTypeId: p.userId?.rankTypeId ?? "",
+      rankTypeLevelId: p.userId?.rankTypeLevelId ?? "",
       joinAt: p.joinAt,
     }));
+
     const formatted = {
       ...conversation.toObject(),
       participants,
@@ -106,33 +111,20 @@ export const getConversation = async (req, res) => {
       .populate([
         {
           path: "participants.userId",
-          select: "displayName avatarUrl",
+          select: "displayName avatarUrl rankTypeId rankTypeLevelId",
         },
         {
           path: "seenBy",
-          select: "displayName avatarUrl",
+          select: "displayName avatarUrl rankTypeId rankTypeLevelId",
         },
         {
           path: "lastMessage.senderId",
-          select: "displayName avatarUrl",
+          select: "displayName avatarUrl rankTypeId rankTypeLevelId",
         },
       ]);
 
-    const formatted = conversations.map((conver) => {
-      const participants = (conver.participants || []).map((p) => ({
-        userId: p.userId?._id,
-        displayName: p.userId?.displayName,
-        avatarUrl: p.userId?.avatarUrl ?? null,
-        joinAt: p.joinAt,
-      }));
-
-      return {
-        ...conver.toObject(),
-        unreadCount: conver.unreadCount || {},
-        participants,
-      };
-    });
-
+    const formatted =await mapCoversation(conversations);
+   
     return res.status(200).json({ conversations: formatted });
   } catch (error) {
     console.error("Lỗi khi lấy danh sách hội thoại", error);

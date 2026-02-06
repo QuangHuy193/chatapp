@@ -1,46 +1,63 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     userName: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        lowercase: true
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
     },
     hashedPassword: {
-        type: String,
-        required: true,        
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        lowercase: true
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
     },
     displayName: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: true,
+      trim: true,
     },
     avatarUrl: {
-        type: String, // link cdn hiển thi        
+      type: String, // link cdn hiển thi
     },
     avatarId: {
-        type: String, // cloundinary cần khi xóa ảnh
+      type: String, // cloundinary cần khi xóa ảnh
     },
     bio: {
-        type: String,
-        maxLength:  500
+      type: String,
+      maxLength: 500,
     },
     phone: {
-        type: String,
-        sparse: true // cho null nhưng nếu nhập thì không được trùng
-    }
-}, {
+      type: String,
+      sparse: true, // cho null nhưng nếu nhập thì không được trùng
+    },
+    activePoint: {
+      type: Number,
+      default: 0,
+    },
+    rankTypeId: {
+      type: String,
+      ref: "RankType",
+      default: "mac-dinh",
+    },
+    rankTypeLevelId: {
+      type: String,
+      ref: "RankLevel",
+      default: "mac-dinh",
+    },
+  },
+  {
     timestamps: true,
-})
+  },
+);
 
-const User = mongoose.model("User", userSchema)
-export default User
+const User = mongoose.model("User", userSchema);
+export default User;

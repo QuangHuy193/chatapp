@@ -1,5 +1,6 @@
 import type { Friend } from "@/types/user";
 import UserAvatar from "../chat/UserAvatar";
+import RankLabel from "../profile/RankLabel";
 
 interface InviteSuggestionListProps {
   fillterFriends: Friend[];
@@ -27,6 +28,12 @@ const InviteSuggestionList = ({
           />
 
           <span className="font-medium">{f.displayName}</span>
+          <span className="ml-6">
+            <RankLabel
+              rankCss={f.rank?.level.uiCss ?? ""}
+              label={f.rank?.level.label ?? ""}
+            />
+          </span>
         </div>
       ))}
     </div>

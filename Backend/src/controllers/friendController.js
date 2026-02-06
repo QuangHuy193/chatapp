@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import FriendRequest from "../models/FriendRequset.js";
 import { swapFriend } from "../util/friendHelper.js";
 import { io } from "../socket/index.js";
+import { mapUserWithRank } from "../util/userHelper.js";
 
 export const sendFriendRequest = async (req, res) => {
   try {
@@ -148,16 +149,27 @@ export const getAllFriends = async (req, res) => {
         },
       ],
     })
-      .populate("userA", "_id userName displayName avatarUrl")
-      .populate("userB", "_id userName displayName avatarUrl")
+      .populate(
+        "userA",
+        "_id userName displayName avatarUrl rankTypeId rankTypeLevelId",
+      )
+      .populate(
+        "userB",
+        "_id userName displayName avatarUrl rankTypeId rankTypeLevelId",
+      )
       .lean();
 
     if (friendShips.length === 0) {
       return res.status(200).json({ friends: [] });
     }
 
-    const friends = friendShips.map((fs) =>
-      fs.userA._id.toString() === userId.toString() ? fs.userB : fs.userA,
+    const friends = await Promise.all(
+      friendShips.map(async (fs) => {
+        const otherUser =
+          fs.userA._id.toString() === userId.toString() ? fs.userB : fs.userA;
+
+        return mapUserWithRank(otherUser);
+      }),
     );
 
     return res.status(200).json({ friends });

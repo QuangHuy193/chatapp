@@ -1,8 +1,22 @@
 export interface Participant {
   userId: string;
   displayName: string;
-  avatarUrl?: string | null;
   joinAt: string;
+  avatarUrl?: string | null;
+  rank?: {
+    type: {
+      _id: string;
+      name: string;
+    };
+    level: {
+      _id: string;
+      level: number;
+      label: string;
+      minAP: number;
+      maxAP: number;
+      uiCss: string;
+    };
+  };
 }
 
 export interface SeenUser {
