@@ -100,7 +100,7 @@ export const signIn = async (req, res) => {
     res.cookie("refreshToken", refresh_token, {
       httpOnly: true,
       secure: true,
-      sameSite: "none", // cho phep fe va be chay tren 2 domain khac nhau
+      sameSite: "lax", // cho phep fe va be chay tren 2 domain khac nhau
       maxAge: ms(REFRESH_TOKEN_TTL),
     });    
 
