@@ -28,7 +28,7 @@ const FormProfileInfo = ({ user }: FormProfileInfoProps) => {
   };
 
   return (
-    <Card className="overflow-y-auto max-h-70 beautiful-scrollbar">
+    <Card className="overflow-y-auto max-h-60 beautiful-scrollbar">
       <CardHeader>
         <CardTitle className="flex items-center gap-1 ">
           <UserPen /> <span>Thông tin cá nhân</span>

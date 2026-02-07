@@ -62,3 +62,16 @@ export const formatMessageTime = (date: Date) => {
   }
 };
 
+// export function checkPassword(str: string) {
+//   if (!str || typeof str !== "string") return 1;
+
+//   const hasUpper = /[A-Z]/.test(str);
+//   const hasLower = /[a-z]/.test(str);
+//   const hasNumber = /[0-9]/.test(str);
+
+//   if (!hasUpper) return 1; // chữ hoa
+//   if (!hasLower) return 2; // chữ thường
+//   if (!hasNumber) return 3; // số
+
+//   return 0;
+// }

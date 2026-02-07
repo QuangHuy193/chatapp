@@ -102,7 +102,7 @@ export const signIn = async (req, res) => {
       secure: true,
       sameSite: "none", // cho phep fe va be chay tren 2 domain khac nhau
       maxAge: ms(REFRESH_TOKEN_TTL),
-    });
+    });    
 
     return res.status(200).json({
       message: `Người dùng ${user.displayName} đã đăng nhập`,

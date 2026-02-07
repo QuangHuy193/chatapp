@@ -5,6 +5,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import FormProfileInfo from "./FormProfileInfo";
 import ProfileConfigCard from "./ProfileConfigCard";
+import { ProfileSecurityCard } from "./ProfileSecurityCard";
 
 interface ProfileDialogProps {
   open: boolean;
@@ -61,7 +62,9 @@ const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
               <TabsContent value="config">
                 <ProfileConfigCard />
               </TabsContent>
-              <TabsContent value="security">s</TabsContent>
+              <TabsContent value="security">
+                <ProfileSecurityCard/>
+              </TabsContent>
             </Tabs>
           </div>
         </div>

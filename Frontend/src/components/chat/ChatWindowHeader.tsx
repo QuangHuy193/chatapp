@@ -94,11 +94,9 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
         </div>
       </div>
 
-      <div className="md:hidden">
-        {chat.type === "group" && (
-          <GroupChatMenu buttonTrigger={<MoreVertical />} />
-        )}
-      </div>
+      {chat.type === "group" && (
+        <GroupChatMenu buttonTrigger={<MoreVertical />} />
+      )}
     </header>
   );
 };

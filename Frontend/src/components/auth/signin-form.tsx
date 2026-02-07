@@ -19,7 +19,12 @@ import { Eye, EyeOff } from "lucide-react";
 // điều kiện form đăng nhập
 const signInSchema = z.object({
   userName: z.string().min(5, "Tên đăng nhập phải có ít nhất 5 kí tự"),
-  password: z.string().min(8, "Mật khẩu phải có ít nhất 8 kí tự"),
+  password: z
+    .string()
+    .min(8, "Mật khẩu phải có ít nhất 8 kí tự")
+    .regex(/[a-z]/, "Mật khẩu phải có chữ thường")
+    .regex(/[A-Z]/, "Mật khẩu phải có chữ hoa")
+    .regex(/[0-9]/, "Mật khẩu phải có số"),
 });
 
 // suy ra kiểu dữ liệu cho form từ schema
@@ -87,7 +92,7 @@ export function SigninForm({
                     id="password"
                     type={isShowPass ? "text" : "password"}
                     {...register("password")}
-                  />                  
+                  />
 
                   {passwordValue ? (
                     isShowPass ? (
@@ -106,7 +111,6 @@ export function SigninForm({
                   ) : (
                     ""
                   )}
-                  
                 </div>
                 {errors.password && (
                   <p className="error-message">{errors.password.message}</p>
