@@ -12,4 +12,10 @@ export const userService = {
 
     return res.data;
   },
+
+  updateRankType: async (rankType: string) => {
+    const res = await api.patch("/users/rankType", { rankType });
+
+    return res.data;
+  },
 };

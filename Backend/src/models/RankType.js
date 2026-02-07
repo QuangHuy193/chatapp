@@ -11,7 +11,7 @@ const rankTypeSchema = mongoose.Schema(
       required: true,
     },
     description: String,
-    isAcvite: {
+    isActive: {
       type: Boolean,
       default: true,
     },

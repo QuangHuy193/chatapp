@@ -1,4 +1,6 @@
 import { uploadImageFromBuffer } from "../middlewares/uploadImageMiddleware.js";
+import RankType from "../models/RankType.js";
+import RankTypeLevel from "../models/RankTypeLevel.js";
 import User from "../models/User.js";
 import { mapUserWithRank } from "../util/userHelper.js";
 
@@ -73,4 +75,46 @@ export const uploadAvatar = async (req, res) => {
   }
 };
 
-export const updateRankType = async (req, res) => {};
+export const updateRankType = async (req, res) => {
+  try {
+    const { rankType } = req.body;
+    const userId = req.user._id;
+
+    if (!rankType) {
+      return res.status(404).json({ message: "Không tìm thấy loại rank mới" });
+    }
+
+    const { name } = await RankType.findById(rankType);
+
+    const { rankTypeLevelId } =
+      await User.findById(userId).select("rankTypeLevelId");
+
+    const rankTypeLevel = await RankTypeLevel.findById(rankTypeLevelId);
+
+    const rankTypeLevelNew = await RankTypeLevel.findOne({
+      level: rankTypeLevel.level,
+      rankTypeId: rankType,
+    });
+
+    await User.findByIdAndUpdate(userId, {
+      rankTypeId: rankType,
+      rankTypeLevelId: rankTypeLevelNew._id,
+    });
+
+    const { rankTypeId, ...rankTypeLevelClean } = rankTypeLevelNew.toObject();
+    res.status(200).json({
+      rank: {
+        type: {
+          _id: rankType,
+          name,
+        },
+        level: rankTypeLevelClean,
+      },
+    });
+  } catch (error) {
+    console.error(`Đổi loại rank faile`, error);
+    res.status(500).json({
+      message: "Lỗi hệ thống",
+    });
+  }
+};

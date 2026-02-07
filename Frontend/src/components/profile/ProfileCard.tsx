@@ -23,8 +23,8 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     via-purple-500 to-pink-500"
     >
       <CardContent
-        className="mt-12 flex flex-col sm:flex-row items-center sm:items-end 
-      gap-6"
+        className="mt-12 flex flex-col sm:flex-row items-center sm:items-end gap-3
+      md:gap-6"
       >
         <div className="relative">
           <UserAvatar
@@ -39,13 +39,21 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
 
         {/* userinfo */}
         <div className="text-center sm:text-left flex-1">
-         <div className="flex gap-7 items-end">
+          <div
+            className="flex justify-center md:justify-start md:gap-7 items-center
+           md:items-end relative"
+          >
             <RankLabel
               label={user.rank?.level.label ?? ""}
               rankCss={user.rank?.level.uiCss ?? ""}
             />
-            <EditRankTypeDialog/>
-         </div>
+            <div
+              className="absolute md:relative -bottom-4 right-3 md:bottom-auto 
+            md:right-auto"
+            >
+              <EditRankTypeDialog />
+            </div>
+          </div>
           <h1 className="text-2xl font-semibold tracking-tight text-white">
             {user.displayName}
           </h1>
