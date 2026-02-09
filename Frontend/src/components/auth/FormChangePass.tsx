@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { toast } from "sonner";
 import EyeButton from "../form/EyeButton";
+import { useUserStore } from "@/stores/useUserStore";
+import { useNavigate } from "react-router";
 
 // điều kiện form đăng nhập
 const changePassSchema = z
@@ -28,6 +29,10 @@ const changePassSchema = z
   .refine((data) => data.newPassword === data.confirmNewPassword, {
     message: "Mật khẩu nhập lại không khớp",
     path: ["confirmNewPassword"], // lỗi sẽ gắn vào field confirmPassword
+  })
+  .refine((data) => data.oldPassword !== data.newPassword, {
+    message: "Mật khẩu mới không được trùng mật khẩu cũ",
+    path: ["newPassword"],
   });
 
 type ChangePassFormValues = z.infer<typeof changePassSchema>;
@@ -42,6 +47,10 @@ const FormChangePass = () => {
     resolver: zodResolver(changePassSchema),
   });
 
+  const navigate = useNavigate();
+
+  const { changePass } = useUserStore();
+
   const [showPass, setShowPass] = useState({
     oldPass: false,
     newPass: false,
@@ -52,8 +61,16 @@ const FormChangePass = () => {
   const newPasswordValue = watch("newPassword");
   const confirmNewPasswordValue = watch("confirmNewPassword");
 
-  const onSubmit = (data: ChangePassFormValues) => {
-    toast.info(".......");
+  const onSubmit = async (data: ChangePassFormValues) => {
+    try {
+      const isSuccess = await changePass(data.oldPassword, data.newPassword);
+
+      if (isSuccess) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

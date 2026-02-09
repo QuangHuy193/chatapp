@@ -53,6 +53,8 @@ export const mapUserWithRank = async (user) => {
     avatarUrl: user.avatarUrl,
     createdAt: user.createdAt,
     activePoint: user.activePoint,
+    phone: user.phone,
+    bio: user.bio,
     rank,
   };
 };

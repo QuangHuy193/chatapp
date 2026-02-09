@@ -3,6 +3,7 @@ export interface User {
   userName: string;
   email: string;
   displayName: string;
+  isActive: boolean;
   avatarUrl?: string;
   bio?: string;
   phone?: string;
@@ -29,6 +30,7 @@ export interface Friend {
   _id: string;
   userName: string;
   displayName: string;
+  isActive: boolean;
   avatarUrl?: string;
   rank?: {
     type: {
@@ -52,6 +54,7 @@ export interface FriendRequest {
     _id: string;
     userName: string;
     displayName: string;
+    isActive: boolean;
     avatarUrl?: string;
     rank?: {
       type: {
@@ -72,6 +75,7 @@ export interface FriendRequest {
     _id: string;
     userName: string;
     displayName: string;
+    isActive: boolean;
     avatarUrl?: string;
     rank?: {
       type: {
@@ -91,4 +95,12 @@ export interface FriendRequest {
   message: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UpdateInfoPayload {
+  userName?: string;
+  displayName?: string;
+  email?: string;
+  phone?: string;
+  bio?: string;
 }

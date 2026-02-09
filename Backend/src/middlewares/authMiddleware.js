@@ -31,6 +31,12 @@ export const protectedRoute = async (req, res, next) => {
           return res.status(404).json({ message: "Người dùng không tồn tại" });
         }
 
+        if (!user.isActive) {
+          return res.status(404).json({
+            message: "Tài khoản không còn hoạt động",
+          });
+        }
+
         // trả user về req
         req.user = user;
         next();

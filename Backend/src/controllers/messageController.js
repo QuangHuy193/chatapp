@@ -5,6 +5,7 @@ import {
   updateCoversationAfterCreateMessage,
 } from "../util/messageHelper.js";
 import { io } from "../socket/index.js";
+import User from "../models/User.js";
 
 export const sendDirectMessage = async (req, res) => {
   try {
@@ -15,6 +16,17 @@ export const sendDirectMessage = async (req, res) => {
 
     if (!content) {
       return res.status(400).json({ message: "Thiếu nội dung" });
+    }
+
+    const receptionUser = await User.findById(receptionId);
+
+    if (!receptionUser) {
+      return res.status(400).json({ message: "Người nhận không tồn tại" });
+    }
+    if (!receptionUser.isActive) {
+      return res
+        .status(400)
+        .json({ message: "Người nhận không còn hoạt động" });
     }
 
     if (conversationId) {

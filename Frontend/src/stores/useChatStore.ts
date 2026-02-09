@@ -5,6 +5,8 @@ import { persist } from "zustand/middleware";
 import { useAuthStore } from "./useAuthStore";
 import type { Conversation } from "@/types/chat";
 import { useSocketStore } from "./useSocketStore";
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
 
 export const useChatStore = create<ChatState>()(
   persist(
@@ -102,7 +104,14 @@ export const useChatStore = create<ChatState>()(
             ),
           }));
         } catch (error) {
-          console.error("Lỗi xảy ra khi sendDirectMessage", error);
+          console.error("sendDirectMessage", error);
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message || "Không thể gửi tin nhắn!",
+            );
+          } else {
+            toast.error("Không thể gửi tin nhắn!");
+          }
         }
       },
 

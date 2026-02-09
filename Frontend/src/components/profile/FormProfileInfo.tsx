@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -12,19 +11,51 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { useState } from "react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useUserStore } from "@/stores/useUserStore";
 
 interface FormProfileInfoProps {
   user: User | null;
 }
 
+// điều kiện form
+const infoSchema = z.object({
+  userName: z.string().min(5, "Tên đăng nhập phải có ít nhất 5 kí tự"),
+  email: z.string().email("Email không hợp lệ"),
+  displayName: z.string().min(1, "Tên hiển thị là bắt buộc"),
+  bio: z.string().max(60, "Giới thiệu tối đa 60 kí tự").optional(),
+  phone: z
+    .string()
+    .regex(/^\d{10}$/, "Số điện thoại phải gồm đúng 10 chữ số")
+    .optional(),
+});
+
+type infoFormValues = z.infer<typeof infoSchema>;
+
 const FormProfileInfo = ({ user }: FormProfileInfoProps) => {
-  const [formData, setFormData] = useState<User | null>(user);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<infoFormValues>({
+    resolver: zodResolver(infoSchema),
+    defaultValues: {
+      userName: user?.userName,
+      displayName: user?.displayName,
+      email: user?.email,
+      bio: user?.bio,
+      phone: user?.phone,
+    },
+  });
+
+  const { updateInfo } = useUserStore();
 
   if (!user) return;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: infoFormValues) => {
+    await updateInfo(data);
   };
 
   return (
@@ -39,45 +70,61 @@ const FormProfileInfo = ({ user }: FormProfileInfoProps) => {
       </CardHeader>
 
       <CardContent>
-        <form className="space-y-2" onSubmit={handleSubmit}>
+        <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-2 space-y-1">
             <div className="flex-1 space-y-1">
               <Label>Tên đăng nhập</Label>
-              <Input value={formData?.userName} />
+              <Input type="text" {...register("userName")} />
+              {errors.userName && (
+                <p className="error-message">{errors.userName.message}</p>
+              )}
             </div>
             <div className="flex-1 space-y-1">
               <Label>Tên hiển thị</Label>
-              <Input value={formData?.displayName} />
+              <Input type="text" {...register("displayName")} />
+              {errors.displayName && (
+                <p className="error-message">{errors.displayName.message}</p>
+              )}
             </div>
           </div>
 
           <div className="flex gap-2 space-y-1">
             <div className="flex-1 space-y-1">
               <Label>Email</Label>
-              <Input value={formData?.email} />
+              <Input type="email" {...register("email")} />
+              {errors.email && (
+                <p className="error-message">{errors.email.message}</p>
+              )}
             </div>
 
             <div className="flex-1 space-y-1">
               <Label>Số điện thoại</Label>
-              <Input value={formData?.phone ?? ""} />
+              <Input type="text" {...register("phone")} />
+              {errors.phone && (
+                <p className="error-message">{errors.phone.message}</p>
+              )}
             </div>
           </div>
 
-          <div>
-            <div className="flex-1 space-y-1">
-              <Label>Giới thiệu</Label>
-              <Textarea
-                value={formData?.bio ?? ""}
-                placeholder="Bạn chưa viết gì cả."
-              />
-            </div>
+          <div className="space-y-1 flex-1">
+            <Label>Giới thiệu</Label>
+            <Textarea
+              className="max-w-103"
+              placeholder="Bạn chưa viết gì cả."
+              {...register("bio")}
+            />
+            {errors.bio && (
+              <p className="error-message">{errors.bio.message}</p>
+            )}
+          </div>
+
+          <div className="flex justify-end">
+            <Button disabled={isSubmitting} type="submit">
+              Lưu thay đổi
+            </Button>
           </div>
         </form>
       </CardContent>
-
-      <CardFooter className="flex justify-end cursor-pointer">
-        <Button type="submit">Lưu thay đổi</Button>
-      </CardFooter>
     </Card>
   );
 };

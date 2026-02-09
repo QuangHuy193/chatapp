@@ -4,6 +4,7 @@ import { authService } from "@/services/authService";
 import type { authState } from "@/types/store";
 import { persist } from "zustand/middleware";
 import { useChatStore } from "./useChatStore";
+import axios from "axios";
 
 export const useAuthStore = create<authState>()(
   persist(
@@ -53,7 +54,13 @@ export const useAuthStore = create<authState>()(
           return true;
         } catch (error) {
           console.error(error);
-          toast.error("Đăng ký không thành công!");
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message || "Đăng ký không thành công!",
+            );
+          } else {
+            toast.error("Đăng ký không thành công!");
+          }
           return false;
         } finally {
           set({ loading: false });
@@ -78,7 +85,13 @@ export const useAuthStore = create<authState>()(
           return true;
         } catch (error) {
           console.log(error);
-          toast.error("Đăng nhập không thành công!");
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message || "Đăng nhập không thành công!",
+            );
+          } else {
+            toast.error("Đăng nhập không thành công!");
+          }
           return false;
         } finally {
           set({ loading: false });
@@ -93,7 +106,13 @@ export const useAuthStore = create<authState>()(
           return true;
         } catch (error) {
           console.log(error);
-          toast.error("Đăng xuất không thành công!");
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message || "Đăng xuất không thành công!",
+            );
+          } else {
+            toast.error("Đăng xuất không thành công!");
+          }
           return false;
         }
       },
@@ -106,7 +125,14 @@ export const useAuthStore = create<authState>()(
         } catch (error) {
           console.log(error);
           set({ user: null, accessToken: null });
-          toast.error("Lỗi xảy ra khi lấy dữ liệu người dùng. Hãy thử lại!");
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message ||
+                "Lỗi xảy ra khi lấy dữ liệu người dùng. Hãy thử lại!",
+            );
+          } else {
+            toast.error("Lỗi xảy ra khi lấy dữ liệu người dùng. Hãy thử lại!");
+          }
         } finally {
           set({ loading: false });
         }

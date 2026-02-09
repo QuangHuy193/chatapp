@@ -39,6 +39,7 @@ export const signUp = async (req, res) => {
       activePoint: 0,
       rankTypeId: "mac-dinh",
       rankTypeLevelId: "mac-dinh-1",
+      isActive: true,
     });
 
     return res.sendStatus(204);
@@ -66,6 +67,12 @@ export const signIn = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         message: "Tên đăng nhập hoặc mật khẩu không chính xác",
+      });
+    }
+
+    if (!user.isActive) {
+      return res.status(404).json({
+        message: "Tài khoản không còn hoạt động",
       });
     }
 
@@ -100,9 +107,9 @@ export const signIn = async (req, res) => {
     res.cookie("refreshToken", refresh_token, {
       httpOnly: true,
       secure: true,
-      sameSite: "lax", // cho phep fe va be chay tren 2 domain khac nhau
+      sameSite: "none", // cho phep fe va be chay tren 2 domain khac nhau
       maxAge: ms(REFRESH_TOKEN_TTL),
-    });    
+    });
 
     return res.status(200).json({
       message: `Người dùng ${user.displayName} đã đăng nhập`,

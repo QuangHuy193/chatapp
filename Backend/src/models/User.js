@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema(
       ref: "RankLevel",
       default: "mac-dinh",
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,
