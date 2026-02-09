@@ -1,6 +1,6 @@
 import OTP from "../models/OTP.js";
 import User from "../models/User.js";
-import { transporter } from "../email/mailer.js";
+import { transporter } from "../libs/mailer.js";
 
 export const sendMailForgotPass = async (req, res) => {
   try {
