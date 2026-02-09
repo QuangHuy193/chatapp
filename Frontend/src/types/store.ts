@@ -6,6 +6,7 @@ export interface authState {
   accessToken: string | null;
   user: User | null;
   loading: boolean;
+  loadingMail: boolean;
   clearState: () => void;
   setAccessToken: (accessToken: string) => void;
   signUp: (
@@ -19,6 +20,8 @@ export interface authState {
   signOut: () => Promise<boolean>;
   fetchMe: () => Promise<void>;
   refreshToken: () => Promise<void>;
+  sendEmailOtp: (email: string) => Promise<boolean>;
+  confirmOtpForgotPass: (email: string, otp: string) => Promise<boolean>;
   setUser: (user: User) => void;
 }
 

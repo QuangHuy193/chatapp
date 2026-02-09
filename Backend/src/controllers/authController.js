@@ -18,12 +18,21 @@ export const signUp = async (req, res) => {
       });
     }
 
-    // kiểm tra tồn tại
-    const duplicate = await User.findOne({ userName });
+    // kiểm tra tồn tại username
+    const duplicateUserName = await User.findOne({ userName });
 
-    if (duplicate) {
+    if (duplicateUserName) {
       res.status(409).json({
-        message: "Đã tồn tại tên đăng nhập này trong hệ thống",
+        message: "Đã tồn tại tên đăng nhập này trong hệ thống!",
+      });
+    }
+
+    // kiểm tra tồn tại email
+    const duplicateEmail = await User.findOne({ email });
+
+    if (duplicateEmail) {
+      res.status(409).json({
+        message: "Đã tồn tại email này trong hệ thống!",
       });
     }
 
@@ -70,18 +79,18 @@ export const signIn = async (req, res) => {
       });
     }
 
-    if (!user.isActive) {
-      return res.status(404).json({
-        message: "Tài khoản không còn hoạt động",
-      });
-    }
-
     // kiểm tra pass
     const passwordCorrect = await bcrypt.compare(password, user.hashedPassword);
 
     if (!passwordCorrect) {
       return res.status(401).json({
         message: "Tên đăng nhập hoặc mật khẩu không chính xác",
+      });
+    }
+
+    if (!user.isActive) {
+      return res.status(404).json({
+        message: "Tài khoản không còn hoạt động",
       });
     }
 

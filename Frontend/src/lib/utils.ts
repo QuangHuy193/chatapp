@@ -62,7 +62,7 @@ export const formatMessageTime = (date: Date) => {
   }
 };
 
-export const maskEmail = (email:string) => {
+export const maskEmail = (email: string) => {
   if (!email) return "";
 
   const [name, domain] = email.split("@");
@@ -72,3 +72,17 @@ export const maskEmail = (email:string) => {
 
   return `${name.slice(0, 2)}***${name.slice(-2)}@${domain}`;
 };
+
+export function checkPassword(password: string) {
+  if (!password || typeof password !== "string") return 4;
+
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+
+  if (!hasUpper) return 1; //hoa
+  if (!hasLower) return 2; //thường
+  if (!hasNumber) return 3; //số
+
+  return 0;
+}

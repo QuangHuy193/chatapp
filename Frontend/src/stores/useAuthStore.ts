@@ -12,6 +12,7 @@ export const useAuthStore = create<authState>()(
       accessToken: null,
       user: null,
       loading: false,
+      loadingMail: false,
 
       clearState: () => {
         set({
@@ -135,6 +136,50 @@ export const useAuthStore = create<authState>()(
           }
         } finally {
           set({ loading: false });
+        }
+      },
+
+      sendEmailOtp: async (email) => {
+        try {
+          set({ loadingMail: true });
+          await authService.sendEmailOtp(email);
+          toast.success("Mã otp đã được gửi về mail của bạn.");
+          return true;
+        } catch (error) {
+          console.log(error);
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message ||
+                "Lỗi xảy ra khi gửi mã otp về email. Hãy thử lại!",
+            );
+          } else {
+            toast.error("Lỗi xảy ra khi gửi mã otp về email. Hãy thử lại!");
+          }
+          return false;
+        } finally {
+          set({ loadingMail: false });
+        }
+      },
+
+      confirmOtpForgotPass: async (email, otp) => {
+        try {
+          set({ loadingMail: true });
+          await authService.confirmOtpForgotPass(email, otp);
+          toast.success("Đã xác thực. Vui lòng nhập mật khẩu mới.");
+          return true;
+        } catch (error) {
+          console.log(error);
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message ||
+                "Lỗi xảy ra khi xác thực mã otp. Hãy thử lại!",
+            );
+          } else {
+            toast.error("Lỗi xảy ra khi xác thực mã otp. Hãy thử lại!");
+          }
+          return false;
+        } finally {
+          set({ loadingMail: false });
         }
       },
 

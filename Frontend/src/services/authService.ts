@@ -42,7 +42,17 @@ export const authService = {
   },
 
   refreshToken: async () => {
-    const res = await api.post("/auth/refresh", { withCredentials: true, });
+    const res = await api.post("/auth/refresh", { withCredentials: true });
     return res.data.accessToken;
+  },
+
+  sendEmailOtp: async (email: string) => {
+    const res = await api.post("/mails/forgotPass", { email });
+    return res.data;
+  },
+
+  confirmOtpForgotPass: async (email: string, otp: string) => {
+    const res = await api.post("/mails/confirmPass", { email, otp });
+    return res.data;
   },
 };
