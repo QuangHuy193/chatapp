@@ -115,6 +115,9 @@ export function SigninForm({
                 {errors.password && (
                   <p className="error-message">{errors.password.message}</p>
                 )}
+                <FieldDescription className="text-end">
+                  <a href="/forgotPass">Quên mật khẩu?</a>
+                </FieldDescription>
               </Field>
 
               <Field>

@@ -62,16 +62,13 @@ export const formatMessageTime = (date: Date) => {
   }
 };
 
-// export function checkPassword(str: string) {
-//   if (!str || typeof str !== "string") return 1;
+export const maskEmail = (email:string) => {
+  if (!email) return "";
 
-//   const hasUpper = /[A-Z]/.test(str);
-//   const hasLower = /[a-z]/.test(str);
-//   const hasNumber = /[0-9]/.test(str);
+  const [name, domain] = email.split("@");
+  if (name.length <= 3) {
+    return `${name[0]}***@${domain}`;
+  }
 
-//   if (!hasUpper) return 1; // chữ hoa
-//   if (!hasLower) return 2; // chữ thường
-//   if (!hasNumber) return 3; // số
-
-//   return 0;
-// }
+  return `${name.slice(0, 2)}***${name.slice(-2)}@${domain}`;
+};

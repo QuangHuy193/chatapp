@@ -8,6 +8,7 @@ import { useThemeStore } from "./stores/useThemeStore";
 import { useEffect } from "react";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useSocketStore } from "./stores/useSocketStore";
+import ForgotPassPage from "./pages/ForgotPassPage";
 
 function App() {
   const { isDark, setTheme } = useThemeStore();
@@ -32,6 +33,8 @@ function App() {
         <Routes>
           {/* public routes */}
           <Route path="/signin" element={<SignInPage />} />
+
+          <Route path="/forgotPass" element={<ForgotPassPage />} />
 
           <Route path="/signup" element={<SignUpPage />} />
 

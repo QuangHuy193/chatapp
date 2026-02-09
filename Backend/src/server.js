@@ -15,6 +15,7 @@ import fs from "fs";
 import { app, server } from "./socket/index.js";
 import { v2 as cloudinary } from "cloudinary";
 import rankTypeRoute from "./routes/rankTypeRoute.js";
+import mailRoute from "./routes/mailRoute.js";
 
 const PORT = process.env.PORT || 3456;
 
@@ -39,6 +40,7 @@ cloudinary.config({
 
 // public router
 app.use(`/api/auth`, authRoute);
+app.use(`/api/mails`, mailRoute);
 
 // private router
 app.use(protectedRoute);
@@ -47,6 +49,7 @@ app.use(`/api/friends`, friendRoute);
 app.use(`/api/messages`, messageRoute);
 app.use(`/api/conversations`, conversationRoute);
 app.use(`/api/ranks`, rankTypeRoute);
+
 
 connectDB().then(() => {
   server.listen(PORT, () => {
