@@ -10,8 +10,8 @@ interface NotificationCardProps {
 
 const NotificationCard = ({ noti }: NotificationCardProps) => {
   const { readNotification } = useNotificationStore();
-  const handleRead = async (noti: string) => {
-    await readNotification(noti);
+  const handleRead = async (notiId: string) => {
+    await readNotification(notiId);
   };
   return (
     <div

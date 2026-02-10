@@ -14,8 +14,8 @@ export const notificationService = {
     };
   },
 
-  readNotification: async (notiId: string) => {
-    const res = await api.patch(`/notifications/read/${notiId}`);
-    return res.data;
-  },
+    readNotification: async (notiId: string) => {
+      const res = await api.patch(`/notifications/read/${notiId}`);
+      return res.data;
+    },
 };

@@ -44,6 +44,8 @@ export const readNotification = async (req, res) => {
     const { notiId } = req.params;
     const user = req.user;
 
+    console.log(notiId);
+
     const noti = await Notification.findById(notiId);
 
     if (!noti) {
