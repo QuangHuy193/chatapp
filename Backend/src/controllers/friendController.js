@@ -4,6 +4,7 @@ import FriendRequest from "../models/FriendRequset.js";
 import { swapFriend } from "../util/friendHelper.js";
 import { io } from "../socket/index.js";
 import { mapUserWithRank } from "../util/userHelper.js";
+import { createNewNotiFriend } from "../util/notificationHelper.js";
 
 export const sendFriendRequest = async (req, res) => {
   try {
@@ -92,9 +93,20 @@ export const acceptFriendRequest = async (req, res) => {
 
     await FriendRequest.findByIdAndDelete(requestId);
 
+    // người gửi lời mời, người nhận thông báo
     const from = await User.findById(request.from)
       .select("_id displayName avatarUrl")
       .lean();
+
+    // người gửi chấp nhận lời mời, người gửi nhận thông báo
+    const to = await User.findById(request.to).select("displayName").lean();
+
+    createNewNotiFriend(
+      request.from,
+      request.to,
+      "FRIEND_ACCEPTED",
+      `${to.displayName} đã chấp nhận lời mời kết bạn của bạn`,
+    );
 
     return res.status(200).json({
       message: "Chấp nhận lời mời kết bạn thành công",
@@ -127,6 +139,15 @@ export const declineFriendRequest = async (req, res) => {
     }
 
     await FriendRequest.findByIdAndDelete(requestId);
+
+    const to = await User.findById(request.to).select("displayName").lean();
+
+    createNewNotiFriend(
+      request.from,
+      request.to,
+      "FRIEND_REJECTED",
+      `${to.displayName} đã từ chối lời mời kết bạn của bạn`,
+    );
 
     return res.status(204).json({ message: "Đã từ chối yêu cầu kết bạn" });
   } catch (error) {

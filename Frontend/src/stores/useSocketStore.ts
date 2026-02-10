@@ -4,6 +4,7 @@ import type { SocketState } from "@/types/store";
 import { useAuthStore } from "./useAuthStore";
 import { useChatStore } from "./useChatStore";
 import { useFriendStore } from "./useFriendStore";
+import { useNotificationStore } from "./useNotificationStore";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -99,6 +100,15 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     // có lời mời kết bạn
     socket.on("friend-rece", () => {
       useFriendStore.getState().getAllFriendRequest();
+    });
+
+    // có thông báo
+    socket.on("notification", (noti) => {
+      console.log("state.notifications", useNotificationStore.getState().notifications);
+      console.log("noti", noti);
+      useNotificationStore.setState((state) => ({
+        notifications: [noti, ...state.notifications],
+      }));
     });
   },
   disconnectSocket: () => {

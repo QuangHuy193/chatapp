@@ -1,6 +1,7 @@
 import type { Socket } from "socket.io-client";
 import type { Conversation, Message } from "./chat";
 import type { Friend, FriendRequest, UpdateInfoPayload, User } from "./user";
+import type { Notification } from "./notification";
 
 export interface authState {
   accessToken: string | null;
@@ -22,10 +23,7 @@ export interface authState {
   refreshToken: () => Promise<void>;
   sendEmailOtp: (email: string) => Promise<boolean>;
   confirmOtpForgotPass: (email: string, otp: string) => Promise<null | string>;
-  createNewPass: (
-    resetToken: string,
-    newPass: string,
-  ) => Promise<boolean>;
+  createNewPass: (resetToken: string, newPass: string) => Promise<boolean>;
   setUser: (user: User) => void;
 }
 
@@ -107,4 +105,17 @@ export interface UserState {
   updateInfo: (data: UpdateInfoPayload) => Promise<void>;
   changePass: (oldPass: string, newPass: string) => Promise<boolean>;
   deleteAccount: () => Promise<boolean>;
+}
+
+export interface NotificationResponse {
+  notifications: Notification[] | [];
+  cursor: string;
+}
+
+export interface NotificationState {
+  notifications: Notification[] | [];
+  cursor: string;
+  loading: boolean;
+  fetchNotification: () => Promise<void>;
+  readNotification: (notiId: string) => Promise<void>;
 }

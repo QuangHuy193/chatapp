@@ -16,6 +16,7 @@ import { app, server } from "./socket/index.js";
 import { v2 as cloudinary } from "cloudinary";
 import rankTypeRoute from "./routes/rankTypeRoute.js";
 import mailRoute from "./routes/mailRoute.js";
+import notificationRoute from "./routes/notificationRoute.js";
 
 const PORT = process.env.PORT || 3456;
 
@@ -49,6 +50,7 @@ app.use(`/api/friends`, friendRoute);
 app.use(`/api/messages`, messageRoute);
 app.use(`/api/conversations`, conversationRoute);
 app.use(`/api/ranks`, rankTypeRoute);
+app.use(`/api/notifications`, notificationRoute);
 
 
 connectDB().then(() => {

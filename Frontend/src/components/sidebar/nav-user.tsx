@@ -24,12 +24,21 @@ import ProfileDialog from "../profile/ProfileDialog";
 import { useFriendStore } from "@/stores/useFriendStore";
 import { Badge } from "../ui/badge";
 import RankLabel from "../rankLabel/RankLabel";
+import { useNotificationStore } from "@/stores/useNotificationStore";
+import NotificationDialog from "../notification/NotificationDialog";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
   const { receivedList } = useFriendStore();
+  const { notifications } = useNotificationStore();
   const [friendRequestOpen, setFriendRequestOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+
+  const notificationNotRead = notifications?.filter((n) => !n.isRead);
+
+  const numberNoti =
+    (notificationNotRead.length ?? 0) + (receivedList.length ?? 0);
 
   return (
     <>
@@ -72,15 +81,13 @@ export function NavUser({ user }: { user: User }) {
                 </div>
                 <div className="relative">
                   <ChevronsUpDown className="ml-auto size-5" />
-                  {receivedList.length > 0 && (
+                  {numberNoti > 0 && (
                     <div className="pulse-ring absolute z-20 -top-1.5 -right-1.5">
                       <Badge
                         className="size-4 text-xs bg-destructive border flex items-center 
                       justify-center p-0 border-background"
                       >
-                        {receivedList.length > 99
-                          ? `${receivedList.length}+`
-                          : receivedList.length}
+                        {numberNoti > 99 ? "99+" : numberNoti}
                       </Badge>
                     </div>
                   )}
@@ -112,14 +119,20 @@ export function NavUser({ user }: { user: User }) {
 
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={() => setProfileOpen(true)}>
-                  <UserIcon className="text-muted-foreground dark:group-focus:text-accent-foreground" />
+                  <UserIcon
+                    className="text-muted-foreground 
+                  dark:group-focus:text-accent-foreground"
+                  />
                   Tài khoản
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setFriendRequestOpen(true)}
                   className="relative"
                 >
-                  <UserPlus className="text-muted-foreground dark:group-focus:text-accent-foreground" />
+                  <UserPlus
+                    className="text-muted-foreground 
+                  dark:group-focus:text-accent-foreground"
+                  />
                   Lời mời kết bạn
                   {receivedList && receivedList.length > 0 && (
                     <span
@@ -127,15 +140,25 @@ export function NavUser({ user }: { user: User }) {
                       justify-center items-center flex right-1 top-1/2 -translate-y-1/2 
                       pulse-ring"
                     >
-                      {receivedList.length > 99
-                        ? `${receivedList.length}+`
-                        : receivedList.length}
+                      {receivedList.length > 99 ? `99+` : receivedList.length}
                     </span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Bell className="text-muted-foreground dark:group-focus:text-accent-foreground" />
+                <DropdownMenuItem onClick={() => setNotificationOpen(true)}>
+                  <Bell
+                    className="text-muted-foreground 
+                  dark:group-focus:text-accent-foreground"
+                  />
                   Thông báo
+                  {notificationNotRead && notificationNotRead.length > 0 && (
+                    <span
+                      className="absolute h-4 w-4 bg-destructive rounded-full text-white 
+                      justify-center items-center flex right-1 top-1/2 -translate-y-1/2 
+                      pulse-ring"
+                    >
+                      {notificationNotRead.length > 99 ? `99+` : notificationNotRead.length}
+                    </span>
+                  )}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
 
@@ -159,6 +182,11 @@ export function NavUser({ user }: { user: User }) {
       />
 
       <ProfileDialog open={profileOpen} setOpen={setProfileOpen} />
+
+      <NotificationDialog
+        open={notificationOpen}
+        setOpen={setNotificationOpen}
+      />
     </>
   );
 }
