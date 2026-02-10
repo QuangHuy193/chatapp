@@ -19,7 +19,7 @@ export const signUp = async (req, res) => {
     }
 
     // kiểm tra tồn tại username
-    const duplicateUserName = await User.findOne({ userName });
+    const duplicateUserName = await User.findOne({ userName, isActive: true });
 
     if (duplicateUserName) {
       res.status(409).json({
@@ -28,7 +28,7 @@ export const signUp = async (req, res) => {
     }
 
     // kiểm tra tồn tại email
-    const duplicateEmail = await User.findOne({ email });
+    const duplicateEmail = await User.findOne({ email, isActive: true });
 
     if (duplicateEmail) {
       res.status(409).json({
@@ -90,7 +90,7 @@ export const signIn = async (req, res) => {
 
     if (!user.isActive) {
       return res.status(404).json({
-        message: "Tài khoản không còn hoạt động",
+        message: "Tên đăng nhập hoặc mật khẩu không chính xác",
       });
     }
 
@@ -188,6 +188,21 @@ export const refreshToken = async (req, res) => {
     return res.status(200).json({ accessToken });
   } catch (error) {
     console.error("Lỗi khi gọi refreshToken", error);
+    res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
+
+export const createNewPass = async (req, res) => {
+  try {
+    const { newPass } = req.body;
+    const userId = req.userId;
+
+    const hashedPassword = await bcrypt.hash(newPass, 10);
+    await User.findByIdAndUpdate(userId, { hashedPassword });
+
+    return res.sendStatus(200);
+  } catch (error) {
+    console.error("Lỗi khi gọi createNewPass", error);
     res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };

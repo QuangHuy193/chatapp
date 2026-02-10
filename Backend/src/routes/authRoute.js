@@ -1,14 +1,23 @@
-import express from "express"
-import { signIn, signOut, signUp,refreshToken } from "../controllers/authController.js"
+import express from "express";
+import {
+  signIn,
+  signOut,
+  signUp,
+  refreshToken,
+  createNewPass,
+} from "../controllers/authController.js";
+import { verifyResetToken } from "../middlewares/authMiddleware.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/signup", signUp)
+router.post("/signup", signUp);
 
-router.post("/signin", signIn)
+router.post("/signin", signIn);
 
-router.post("/signout", signOut)
+router.post("/signout", signOut);
 
-router.post("/refresh", refreshToken)
+router.post("/refresh", refreshToken);
 
-export default router
+router.post("/createNewPass", verifyResetToken, createNewPass);
+
+export default router;

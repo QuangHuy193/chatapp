@@ -164,9 +164,9 @@ export const useAuthStore = create<authState>()(
       confirmOtpForgotPass: async (email, otp) => {
         try {
           set({ loadingMail: true });
-          await authService.confirmOtpForgotPass(email, otp);
+          const resetToken = await authService.confirmOtpForgotPass(email, otp);
           toast.success("Đã xác thực. Vui lòng nhập mật khẩu mới.");
-          return true;
+          return resetToken;
         } catch (error) {
           console.log(error);
           if (axios.isAxiosError(error)) {
@@ -177,9 +177,31 @@ export const useAuthStore = create<authState>()(
           } else {
             toast.error("Lỗi xảy ra khi xác thực mã otp. Hãy thử lại!");
           }
-          return false;
+          return null;
         } finally {
           set({ loadingMail: false });
+        }
+      },
+
+      createNewPass: async (resetToken, newPass) => {
+        try {
+          set({ loading: true });
+          await authService.createNewPass(resetToken, newPass);
+          toast.success("Đã đổi mật khẩu mới. Vui lòng đăng nhập");
+          return true;
+        } catch (error) {
+          console.log(error);
+          if (axios.isAxiosError(error)) {
+            toast.error(
+              error.response?.data?.message ||
+                "Lỗi xảy ra khi tạo mật khẩu mới. Hãy thử lại!",
+            );
+          } else {
+            toast.error("Lỗi xảy ra khi tạo mật khẩu mới. Hãy thử lại!");
+          }
+          return false;
+        } finally {
+          set({ loading: false });
         }
       },
 

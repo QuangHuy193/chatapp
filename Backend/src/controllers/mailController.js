@@ -1,6 +1,7 @@
 import OTP from "../models/OTP.js";
 import User from "../models/User.js";
 import { transporter } from "../libs/mailer.js";
+import jwt from "jsonwebtoken";
 
 export const sendMailForgotPass = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ export const sendMailForgotPass = async (req, res) => {
       return res.status(400).json({ message: "Vui lòng nhập email" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, isActive: true });
     if (!user) {
       return res.sendStatus(400).json({ message: "" });
     }
@@ -69,7 +70,7 @@ export const confirmForgotPass = async (req, res) => {
       "otp",
     );
 
-    if (!otp) {
+    if (!otpDB) {
       return res
         .status(400)
         .json({ message: "OTP không đúng hoặc đã hết hạn!" });
@@ -78,7 +79,15 @@ export const confirmForgotPass = async (req, res) => {
     const isCompare = otp === otpDB;
 
     if (isCompare) {
-      return res.sendStatus(204);
+      const resetToken = jwt.sign(
+        {
+          userId: user._id,
+          type: "RESET_PASSWORD",
+        },
+        process.env.RESET_PASSWORD_SECRET,
+        { expiresIn: "10m" },
+      );
+      return res.status(200).json({ resetToken });
     } else {
       return res
         .status(400)

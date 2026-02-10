@@ -47,3 +47,23 @@ export const protectedRoute = async (req, res, next) => {
     return res.status(500).json({ mesage: "Lỗi hệ thống" });
   }
 };
+
+export const verifyResetToken = (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Thiếu reset token" });
+    }
+
+    const decoded = jwt.verify(token, process.env.RESET_PASSWORD_SECRET);
+
+    if (decoded.type !== "RESET_PASSWORD") {
+      return res.status(403).json({ message: "Token không hợp lệ" });
+    }
+
+    req.userId = decoded.userId;
+    next();
+  } catch {
+    return res.status(401).json({ message: "Token hết hạn hoặc không hợp lệ" });
+  }
+};

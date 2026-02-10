@@ -4,12 +4,16 @@ import { Input } from "../ui/input";
 import EyeButton from "../form/EyeButton";
 import { Button } from "../ui/button";
 import { checkPassword } from "@/lib/utils";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router";
 
 interface CreateNewPassProps {
-  email: string;
+  resetToken: string;
 }
 
-const CreateNewPass = ({ email }: CreateNewPassProps) => {
+const CreateNewPass = ({ resetToken }: CreateNewPassProps) => {
+  const { createNewPass } = useAuthStore();
+  const navigate = useNavigate();
   const [showPass, setShowPass] = useState({
     pass: false,
     confirmPass: false,
@@ -80,7 +84,11 @@ const CreateNewPass = ({ email }: CreateNewPassProps) => {
       }));
     }
 
-    console.log("TODO");
+    const isSuccess = await createNewPass(resetToken, formData.pass);
+
+    if (isSuccess) {
+      navigate("/signin");
+    }
   };
 
   return (

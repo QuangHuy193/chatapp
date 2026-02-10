@@ -21,7 +21,11 @@ export interface authState {
   fetchMe: () => Promise<void>;
   refreshToken: () => Promise<void>;
   sendEmailOtp: (email: string) => Promise<boolean>;
-  confirmOtpForgotPass: (email: string, otp: string) => Promise<boolean>;
+  confirmOtpForgotPass: (email: string, otp: string) => Promise<null | string>;
+  createNewPass: (
+    resetToken: string,
+    newPass: string,
+  ) => Promise<boolean>;
   setUser: (user: User) => void;
 }
 

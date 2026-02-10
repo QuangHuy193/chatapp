@@ -11,6 +11,7 @@ const ForgotPassForm = () => {
   const [formType, setFormType] = useState("email");
   const [timeLeft, setTimeLeft] = useState(0);
   const [otp, setOtp] = useState("");
+  const [resetToken, setResetToken] = useState("");
 
   const { loadingMail, sendEmailOtp, confirmOtpForgotPass } = useAuthStore();
 
@@ -55,9 +56,10 @@ const ForgotPassForm = () => {
       return;
     }
 
-    const isConfirm = await confirmOtpForgotPass(email, otp);
+    const resetToken = await confirmOtpForgotPass(email, otp);
 
-    if (isConfirm) {
+    if (resetToken) {
+      setResetToken(resetToken)
       setFormType("password");
     }
   };
@@ -76,14 +78,16 @@ const ForgotPassForm = () => {
       />
     );
   } else if (formType === "email") {
-   return <SendOtpForm
-      email={email}
-      handleSendOtp={handleSendOtp}
-      loadingMail={loadingMail}
-      setEmail={setEmail}
-    />;
+    return (
+      <SendOtpForm
+        email={email}
+        handleSendOtp={handleSendOtp}
+        loadingMail={loadingMail}
+        setEmail={setEmail}
+      />
+    );
   } else {
-    return <CreateNewPass email={email}/>;
+    return <CreateNewPass resetToken={resetToken} />;
   }
 };
 

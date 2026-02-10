@@ -53,6 +53,19 @@ export const authService = {
 
   confirmOtpForgotPass: async (email: string, otp: string) => {
     const res = await api.post("/mails/confirmPass", { email, otp });
+    return res.data.resetToken;
+  },
+
+  createNewPass: async (resetToken: string, newPass: string) => {
+    const res = await api.post(
+      "/auth/createNewPass",
+      { newPass },
+      {
+        headers: {
+          Authorization: `Bearer ${resetToken}`,
+        },
+      },
+    );
     return res.data;
   },
 };
